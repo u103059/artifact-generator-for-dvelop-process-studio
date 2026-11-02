@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<definitions xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL"
+             xmlns:camunda="http://camunda.org/schema/1.0/bpmn"
+             xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI"
+             xmlns:dc="http://www.omg.org/spec/DD/20100524/DC"
+             xmlns:di="http://www.omg.org/spec/DD/20100524/DI"
+             targetNamespace=""
+             exporter="d.velop process modeler"
+             exporterVersion="1.0.0">
+  <process id="beschaffung_genehmigen_process" name="Beschaffung genehmigen" isExecutable="true">
+    <extensionElements>
+      <camunda:properties>
+        <camunda:property name="variable:zeichnungsberechtigte_person*" value="Identity!" />
+        <camunda:property name="variable:beschaffungsstelle*" value="Identity!" />
+        <camunda:property name="variable:beschaffungsbeschreibung" value="String" />
+        <camunda:property name="variable:Betrag_EUR" value="Number" />
+        <camunda:property name="variable:Zeichnungsbefugnis" value="String" />
+      </camunda:properties>
+    </extensionElements>
+    <startEvent id="start" name="Beschaffungsbedarf festgestellt" />
+    <userTask id="task_beschaffungsantrag_erfassen" name="Beschaffungsantrag erfassen" camunda:formKey="5c1e8a3d-92b7-4f60-a4d1-7e3b9c0f2a68" camunda:candidateUsers="${variables.get('dv_initiator')}" camunda:priority="50" />
+    <userTask id="task_beschaffungsantrag_genehmigen" name="Beschaffungsantrag genehmigen" camunda:candidateUsers="${variables.get('zeichnungsberechtigte_person')}" camunda:priority="50" />
+    <userTask id="task_beschaffung_veranlassen" name="Beschaffung veranlassen" camunda:candidateUsers="${variables.get('beschaffungsstelle')}" camunda:priority="50" />
+    <endEvent id="end" name="Beschaffung veranlasst" />
+    <sequenceFlow id="s1" sourceRef="start" targetRef="task_beschaffungsantrag_erfassen" />
+    <sequenceFlow id="s2" sourceRef="task_beschaffungsantrag_erfassen" targetRef="task_beschaffungsantrag_genehmigen" />
+    <sequenceFlow id="s3" sourceRef="task_beschaffungsantrag_genehmigen" targetRef="task_beschaffung_veranlassen" />
+    <sequenceFlow id="s4" sourceRef="task_beschaffung_veranlassen" targetRef="end" />
+  </process>
+  <bpmndi:BPMNDiagram id="BPMNDiagram_1">
+    <bpmndi:BPMNPlane id="BPMNPlane_1" bpmnElement="beschaffung_genehmigen_process">
+      <bpmndi:BPMNShape id="start_di" bpmnElement="start">
+        <dc:Bounds x="173" y="102" width="36" height="36" />
+        <bpmndi:BPMNLabel><dc:Bounds x="148" y="145" width="86" height="40" /></bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="task_beschaffungsantrag_erfassen_di" bpmnElement="task_beschaffungsantrag_erfassen">
+        <dc:Bounds x="259" y="80" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="task_beschaffungsantrag_genehmigen_di" bpmnElement="task_beschaffungsantrag_genehmigen">
+        <dc:Bounds x="409" y="80" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="task_beschaffung_veranlassen_di" bpmnElement="task_beschaffung_veranlassen">
+        <dc:Bounds x="559" y="80" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="end_di" bpmnElement="end">
+        <dc:Bounds x="709" y="102" width="36" height="36" />
+        <bpmndi:BPMNLabel><dc:Bounds x="689" y="145" width="76" height="27" /></bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="s1_di" bpmnElement="s1">
+        <di:waypoint x="209" y="120" />
+        <di:waypoint x="259" y="120" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="s2_di" bpmnElement="s2">
+        <di:waypoint x="359" y="120" />
+        <di:waypoint x="409" y="120" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="s3_di" bpmnElement="s3">
+        <di:waypoint x="509" y="120" />
+        <di:waypoint x="559" y="120" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="s4_di" bpmnElement="s4">
+        <di:waypoint x="659" y="120" />
+        <di:waypoint x="709" y="120" />
+      </bpmndi:BPMNEdge>
+    </bpmndi:BPMNPlane>
+  </bpmndi:BPMNDiagram>
+</definitions>
