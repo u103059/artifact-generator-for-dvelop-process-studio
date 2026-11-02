@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<dmn:definitions xmlns:dmn="https://www.omg.org/spec/DMN/20191111/MODEL/" xmlns:camunda="http://camunda.org/schema/1.0/dmn" xmlns:dmndi="https://www.omg.org/spec/DMN/20191111/DMNDI/" xmlns:dc="http://www.omg.org/spec/DMN/20180521/DC/" id="b-37e28fd2-1292-4080-a74b-cc411e1477c7" name="Standort zu Prüfer" namespace="http://camunda.org/schema/1.0/dmn" exporter="d.velop process modeler" exporterVersion="1.1.0">
+  <dmn:decision id="b-37e28fd2-1292-4080-a74b-cc411e1477c7-root" name="Main">
+    <dmn:decisionTable id="mainTable">
+      <dmn:input id="input" label="Standort_GR" camunda:inputVariable="input">
+        <dmn:inputExpression id="inputExpression" typeRef="String">
+          <dmn:text></dmn:text>
+        </dmn:inputExpression>
+      </dmn:input>
+      <dmn:output id="output" label="Pruefer_GR" name="output" typeRef="Identity" />
+      <dmn:rule id="DecisionRule_07t0xo2">
+        <dmn:inputEntry id="UnaryTests_1gcnmnh">
+          <dmn:text>"intern"</dmn:text>
+        </dmn:inputEntry>
+        <dmn:outputEntry id="LiteralExpression_1eci7xw">
+          <dmn:text>"identity:///identityprovider/scim/Users/e13fd05f-99fa-4516-9cb1-ee41c1d3dda7"</dmn:text>
+        </dmn:outputEntry>
+      </dmn:rule>
+      <dmn:rule id="DecisionRule_fe6d503a-0de8-21c6-9562-57cf28ab7140">
+        <dmn:inputEntry id="UnaryTests_0qjogj7">
+          <dmn:text>"extern"</dmn:text>
+        </dmn:inputEntry>
+        <dmn:outputEntry id="LiteralExpression_091bwao">
+          <dmn:text>"identity:///identityprovider/scim/Users/4d1d33cf-186d-4c40-a3cd-7143ec921e5f"</dmn:text>
+        </dmn:outputEntry>
+      </dmn:rule>
+      <dmn:rule id="DecisionRule_c3203cba-a29e-186a-972c-a3c8db0cb3ac">
+        <dmn:inputEntry id="UnaryTests_0qe9s17">
+          <dmn:text></dmn:text>
+        </dmn:inputEntry>
+        <dmn:outputEntry id="LiteralExpression_09g1jjh">
+          <dmn:text>"identity:///identityprovider/scim/Groups/6DB690CB-EA1B-4D45-B00B-63A2E7B21816"</dmn:text>
+        </dmn:outputEntry>
+      </dmn:rule>
+    </dmn:decisionTable>
+  </dmn:decision>
+  <dmndi:DMNDI>
+    <dmndi:DMNDiagram>
+      <dmndi:DMNShape dmnElementRef="b-37e28fd2-1292-4080-a74b-cc411e1477c7-root">
+        <dc:Bounds height="80" width="180" x="160" y="120" />
+      </dmndi:DMNShape>
+    </dmndi:DMNDiagram>
+  </dmndi:DMNDI>
+</dmn:definitions>

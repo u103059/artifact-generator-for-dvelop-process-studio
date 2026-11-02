@@ -17,7 +17,7 @@ Der Begriff bezeichnet das erzeugte Ergebnis, nicht dessen Freigabestatus. Ein e
 |---|---|
 | **Prozessmodelle (BPMN)** | Dokumentierter Agentenworkflow zur Erstellung von Prozessbeschreibungen und BPMN-Dateien auf Basis einer Process-Studio-spezifischen XML-Vorlage. |
 | **Formulare (JSON)** | Dokumentierter Agentenworkflow zur Erstellung von Formularen und ihrer Verknüpfung mit BPMN-Benutzeraufgaben. |
-| **Entscheidungsregeln (DMN)** | Vorhandene Beispieldateien als Ausgangspunkt für die Weiterentwicklung. Integration und Kompatibilität sind für die Zielumgebung gesondert zu prüfen. |
+| **Entscheidungsregeln (DMN)** | Agentenworkflow zur Erstellung von Entscheidungstabellen auf Basis einer aus einem Modeler-Export abgeleiteten DMN-Vorlage. Ungetestete DMN-Funktionen und die BPMN-Einbindung sind in der Zielumgebung gesondert zu prüfen. |
 | **Skripte** | Perspektivischer Erweiterungsbereich, etwa für Datenverarbeitung und Serviceanbindungen; ein entsprechender Erstellungsworkflow ist bislang nicht dokumentiert. |
 
 ## Arbeitsweise
@@ -45,6 +45,13 @@ Der Workflow umfasst die Erstellung einer Formular-ID und deren Eintragung als `
 
 Beispielauftrag: „Erstelle ein Formular für die Aufgabe ‚Antrag prüfen‘ im vorhandenen BPMN-Modell. Benötigt werden eine schreibgeschützte Antragsnummer, eine verpflichtende Entscheidung und ein Kommentarfeld. Verknüpfe das Formular mit der Benutzeraufgabe.“
 
+## Entscheidungstabellen erstellen
+Der Agent **DMN_ProcessStudio** erstellt DMN-Entscheidungstabellen auf Grundlage von `DMN.Template.md`. Benötigt werden Tabellenname, Eingabe- und Ausgabevariablen mit Typ (`String`, `Number`, `Boolean`, `Identity`) sowie die Regeln. Der Agent legt zunächst einen Tabellenentwurf zur Bestätigung vor und erzeugt danach die Datei in `CreateDMN/`.
+
+Die Vorlage kennzeichnet verifizierte und ungetestete Inhalte. Die Einbindung in BPMN erfolgt nur, wenn eine exportierte Referenz-BPMN mit Geschäftsregelaktivität in `example-DMN/` vorliegt.
+
+Beispielauftrag: „Erstelle eine Entscheidungstabelle ‚Standort zu Prüfer‘: Eingabe `Standort_GR` (String), Ausgabe `Pruefer_GR` (Identity). Intern → Benutzer A, extern → Benutzer B, sonst → Gruppe Prüfer.“
+
 ## Voraussetzungen
 - **Visual Studio Code**, **GitHub Copilot** und die für die Agentennutzung erforderliche Berechtigung.
 - Zugriff auf die zum jeweiligen Workflow gehörenden Agentenkonfigurationen, Vorlagen und Beispiele.
@@ -58,7 +65,8 @@ Die technische Dokumentation beschreibt die bisherige Entwicklungsumgebung und e
 |---|---|
 | CreateBPMN | Erstellte BPMN-Prozessmodelle. |
 | CreateForm | Erstellte Formulardateien im JSON-Format. |
-| CreateDMN | Vorhandene DMN-Entscheidungsmodelle. |
+| CreateDMN | Erstellte DMN-Entscheidungstabellen. |
+| example-DMN | DMN-Beispiele aus dem d.velop process modeler als technische Referenz. |
 | BeispielForms | Formularbeispiele als technische Referenz. |
 | example-bpmn-processes | BPMN-Beispiele unter anderem für Gateways, Timer, Mehrfachausführungen und Serviceaufrufe. |
 
