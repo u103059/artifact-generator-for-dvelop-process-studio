@@ -1,0 +1,322 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<definitions xmlns="https://www.omg.org/spec/DMN/20191111/MODEL/"
+             xmlns:dmndi="https://www.omg.org/spec/DMN/20191111/DMNDI/"
+             xmlns:dc="http://www.omg.org/spec/DMN/20180521/DC/"
+             xmlns:camunda="http://camunda.org/schema/1.0/dmn"
+             id="Definitions_Zeichnungsbefugnis_DOIT"
+             name="Zeichnungsbefugnis DO.IT"
+             namespace="http://camunda.org/schema/1.0/dmn"
+             exporter="Camunda Modeler"
+             exporterVersion="5.0.0">
+
+  <!-- § 18 Abs. 1 ZO: Entscheidung über Art und Umfang der Beschaffung -->
+  <decision id="Decision_Beschaffung_Art_Umfang" name="Beschaffung Art und Umfang">
+    <decisionTable id="DecisionTable_Beschaffung_Art_Umfang" hitPolicy="FIRST">
+      <input id="Input_BAU_Betrag" label="Voraussichtlicher Aufwand (EUR)" camunda:inputVariable="betrag">
+        <inputExpression id="InputExpression_BAU_Betrag" typeRef="double">
+          <text>betrag</text>
+        </inputExpression>
+      </input>
+      <output id="Output_BAU_Ebene" label="Zeichnungsbefugte Ebene" name="ebene" typeRef="string" />
+      <output id="Output_BAU_Einvernehmen" label="Einvernehmen" name="einvernehmen" typeRef="string" />
+      <output id="Output_BAU_Grundlage" label="Rechtsgrundlage" name="rechtsgrundlage" typeRef="string" />
+      <rule id="Rule_BAU_1">
+        <description>Bis 20.000 EUR: Sachbearbeitung</description>
+        <inputEntry id="Rule_BAU_1_In1"><text>&lt;= 20000</text></inputEntry>
+        <outputEntry id="Rule_BAU_1_Out1"><text>"SB"</text></outputEntry>
+        <outputEntry id="Rule_BAU_1_Out2"><text>""</text></outputEntry>
+        <outputEntry id="Rule_BAU_1_Out3"><text>"§ 18 Abs. 1 ZO"</text></outputEntry>
+      </rule>
+      <rule id="Rule_BAU_2">
+        <description>Bis 40.000 EUR: TL</description>
+        <inputEntry id="Rule_BAU_2_In1"><text>&lt;= 40000</text></inputEntry>
+        <outputEntry id="Rule_BAU_2_Out1"><text>"TL"</text></outputEntry>
+        <outputEntry id="Rule_BAU_2_Out2"><text>""</text></outputEntry>
+        <outputEntry id="Rule_BAU_2_Out3"><text>"§ 18 Abs. 1 ZO"</text></outputEntry>
+      </rule>
+      <rule id="Rule_BAU_3">
+        <description>Bis 80.000 EUR: Sachgebietsleitung</description>
+        <inputEntry id="Rule_BAU_3_In1"><text>&lt;= 80000</text></inputEntry>
+        <outputEntry id="Rule_BAU_3_Out1"><text>"SGL"</text></outputEntry>
+        <outputEntry id="Rule_BAU_3_Out2"><text>""</text></outputEntry>
+        <outputEntry id="Rule_BAU_3_Out3"><text>"§ 18 Abs. 1 ZO"</text></outputEntry>
+      </rule>
+      <rule id="Rule_BAU_4">
+        <description>Bis 120.000 EUR: Abteilungsleitung</description>
+        <inputEntry id="Rule_BAU_4_In1"><text>&lt;= 120000</text></inputEntry>
+        <outputEntry id="Rule_BAU_4_Out1"><text>"AbtL"</text></outputEntry>
+        <outputEntry id="Rule_BAU_4_Out2"><text>""</text></outputEntry>
+        <outputEntry id="Rule_BAU_4_Out3"><text>"§ 18 Abs. 1 ZO"</text></outputEntry>
+      </rule>
+      <rule id="Rule_BAU_5">
+        <description>Bis 190.000 EUR: Amtsleitung</description>
+        <inputEntry id="Rule_BAU_5_In1"><text>&lt;= 190000</text></inputEntry>
+        <outputEntry id="Rule_BAU_5_Out1"><text>"AL"</text></outputEntry>
+        <outputEntry id="Rule_BAU_5_Out2"><text>""</text></outputEntry>
+        <outputEntry id="Rule_BAU_5_Out3"><text>"§ 18 Abs. 1 ZO"</text></outputEntry>
+      </rule>
+      <rule id="Rule_BAU_6">
+        <description>Über 190.000 EUR: außerhalb der Zeichnungsbefugnis DO.IT</description>
+        <inputEntry id="Rule_BAU_6_In1"><text></text></inputEntry>
+        <outputEntry id="Rule_BAU_6_Out1"><text>"Keine Zeichnungsbefugnis DO.IT (höhere Zuständigkeit)"</text></outputEntry>
+        <outputEntry id="Rule_BAU_6_Out2"><text>""</text></outputEntry>
+        <outputEntry id="Rule_BAU_6_Out3"><text>"§ 18 Abs. 1 ZO"</text></outputEntry>
+      </rule>
+    </decisionTable>
+  </decision>
+
+  <!-- § 18 Abs. 2 ZO: Entscheidung über die Vergabe von Lieferungen und Leistungen -->
+  <decision id="Decision_Vergabe" name="Vergabe von Lieferungen und Leistungen">
+    <decisionTable id="DecisionTable_Vergabe" hitPolicy="FIRST">
+      <input id="Input_VG_Betrag" label="Vergabesumme (EUR)" camunda:inputVariable="betrag">
+        <inputExpression id="InputExpression_VG_Betrag" typeRef="double">
+          <text>betrag</text>
+        </inputExpression>
+      </input>
+      <output id="Output_VG_Ebene" label="Zeichnungsbefugte Ebene" name="ebene" typeRef="string" />
+      <output id="Output_VG_Einvernehmen" label="Einvernehmen" name="einvernehmen" typeRef="string" />
+      <output id="Output_VG_Grundlage" label="Rechtsgrundlage" name="rechtsgrundlage" typeRef="string" />
+      <rule id="Rule_VG_1">
+        <description>Bis 20.000 EUR: Sachbearbeitung</description>
+        <inputEntry id="Rule_VG_1_In1"><text>&lt;= 20000</text></inputEntry>
+        <outputEntry id="Rule_VG_1_Out1"><text>"SB"</text></outputEntry>
+        <outputEntry id="Rule_VG_1_Out2"><text>""</text></outputEntry>
+        <outputEntry id="Rule_VG_1_Out3"><text>"§ 18 Abs. 2 ZO"</text></outputEntry>
+      </rule>
+      <rule id="Rule_VG_2">
+        <description>Bis 40.000 EUR: TL</description>
+        <inputEntry id="Rule_VG_2_In1"><text>&lt;= 40000</text></inputEntry>
+        <outputEntry id="Rule_VG_2_Out1"><text>"TL"</text></outputEntry>
+        <outputEntry id="Rule_VG_2_Out2"><text>""</text></outputEntry>
+        <outputEntry id="Rule_VG_2_Out3"><text>"§ 18 Abs. 2 ZO"</text></outputEntry>
+      </rule>
+      <rule id="Rule_VG_3">
+        <description>Bis 80.000 EUR: Sachgebietsleitung</description>
+        <inputEntry id="Rule_VG_3_In1"><text>&lt;= 80000</text></inputEntry>
+        <outputEntry id="Rule_VG_3_Out1"><text>"SGL"</text></outputEntry>
+        <outputEntry id="Rule_VG_3_Out2"><text>""</text></outputEntry>
+        <outputEntry id="Rule_VG_3_Out3"><text>"§ 18 Abs. 2 ZO"</text></outputEntry>
+      </rule>
+      <rule id="Rule_VG_4">
+        <description>Bis 120.000 EUR: Abteilungsleitung</description>
+        <inputEntry id="Rule_VG_4_In1"><text>&lt;= 120000</text></inputEntry>
+        <outputEntry id="Rule_VG_4_Out1"><text>"AbtL"</text></outputEntry>
+        <outputEntry id="Rule_VG_4_Out2"><text>""</text></outputEntry>
+        <outputEntry id="Rule_VG_4_Out3"><text>"§ 18 Abs. 2 ZO"</text></outputEntry>
+      </rule>
+      <rule id="Rule_VG_5">
+        <description>Bis 190.000 EUR: Amtsleitung</description>
+        <inputEntry id="Rule_VG_5_In1"><text>&lt;= 190000</text></inputEntry>
+        <outputEntry id="Rule_VG_5_Out1"><text>"AL"</text></outputEntry>
+        <outputEntry id="Rule_VG_5_Out2"><text>""</text></outputEntry>
+        <outputEntry id="Rule_VG_5_Out3"><text>"§ 18 Abs. 2 ZO"</text></outputEntry>
+      </rule>
+      <rule id="Rule_VG_6">
+        <description>Über 190.000 EUR: außerhalb der Zeichnungsbefugnis DO.IT</description>
+        <inputEntry id="Rule_VG_6_In1"><text></text></inputEntry>
+        <outputEntry id="Rule_VG_6_Out1"><text>"Keine Zeichnungsbefugnis DO.IT (höhere Zuständigkeit)"</text></outputEntry>
+        <outputEntry id="Rule_VG_6_Out2"><text>""</text></outputEntry>
+        <outputEntry id="Rule_VG_6_Out3"><text>"§ 18 Abs. 2 ZO"</text></outputEntry>
+      </rule>
+    </decisionTable>
+  </decision>
+
+  <!-- § 25 Abs. 4 ZO: Leistung von Vorauszahlungen -->
+  <decision id="Decision_Vorauszahlung" name="Leistung von Vorauszahlungen">
+    <decisionTable id="DecisionTable_Vorauszahlung" hitPolicy="FIRST">
+      <input id="Input_VZ_Betrag" label="Vorauszahlung (EUR)" camunda:inputVariable="betrag">
+        <inputExpression id="InputExpression_VZ_Betrag" typeRef="double">
+          <text>betrag</text>
+        </inputExpression>
+      </input>
+      <output id="Output_VZ_Ebene" label="Zeichnungsbefugte Ebene" name="ebene" typeRef="string" />
+      <output id="Output_VZ_Einvernehmen" label="Einvernehmen" name="einvernehmen" typeRef="string" />
+      <output id="Output_VZ_Grundlage" label="Rechtsgrundlage" name="rechtsgrundlage" typeRef="string" />
+      <rule id="Rule_VZ_1">
+        <description>Bis 20.000 EUR: Sachbearbeitung</description>
+        <inputEntry id="Rule_VZ_1_In1"><text>&lt;= 20000</text></inputEntry>
+        <outputEntry id="Rule_VZ_1_Out1"><text>"SB"</text></outputEntry>
+        <outputEntry id="Rule_VZ_1_Out2"><text>"Stadtkämmerei und Rechtsamt"</text></outputEntry>
+        <outputEntry id="Rule_VZ_1_Out3"><text>"§ 25 Abs. 4 ZO"</text></outputEntry>
+      </rule>
+      <rule id="Rule_VZ_2">
+        <description>Bis 40.000 EUR: TL</description>
+        <inputEntry id="Rule_VZ_2_In1"><text>&lt;= 40000</text></inputEntry>
+        <outputEntry id="Rule_VZ_2_Out1"><text>"TL"</text></outputEntry>
+        <outputEntry id="Rule_VZ_2_Out2"><text>"Stadtkämmerei und Rechtsamt"</text></outputEntry>
+        <outputEntry id="Rule_VZ_2_Out3"><text>"§ 25 Abs. 4 ZO"</text></outputEntry>
+      </rule>
+      <rule id="Rule_VZ_3">
+        <description>Bis 80.000 EUR: Sachgebietsleitung</description>
+        <inputEntry id="Rule_VZ_3_In1"><text>&lt;= 80000</text></inputEntry>
+        <outputEntry id="Rule_VZ_3_Out1"><text>"SGL"</text></outputEntry>
+        <outputEntry id="Rule_VZ_3_Out2"><text>"Stadtkämmerei und Rechtsamt"</text></outputEntry>
+        <outputEntry id="Rule_VZ_3_Out3"><text>"§ 25 Abs. 4 ZO"</text></outputEntry>
+      </rule>
+      <rule id="Rule_VZ_4">
+        <description>Bis 120.000 EUR: Abteilungsleitung</description>
+        <inputEntry id="Rule_VZ_4_In1"><text>&lt;= 120000</text></inputEntry>
+        <outputEntry id="Rule_VZ_4_Out1"><text>"AbtL"</text></outputEntry>
+        <outputEntry id="Rule_VZ_4_Out2"><text>"Stadtkämmerei und Rechtsamt"</text></outputEntry>
+        <outputEntry id="Rule_VZ_4_Out3"><text>"§ 25 Abs. 4 ZO"</text></outputEntry>
+      </rule>
+      <rule id="Rule_VZ_5">
+        <description>Bis 190.000 EUR: Amtsleitung</description>
+        <inputEntry id="Rule_VZ_5_In1"><text>&lt;= 190000</text></inputEntry>
+        <outputEntry id="Rule_VZ_5_Out1"><text>"AL"</text></outputEntry>
+        <outputEntry id="Rule_VZ_5_Out2"><text>"Stadtkämmerei und Rechtsamt"</text></outputEntry>
+        <outputEntry id="Rule_VZ_5_Out3"><text>"§ 25 Abs. 4 ZO"</text></outputEntry>
+      </rule>
+      <rule id="Rule_VZ_6">
+        <description>Über 190.000 EUR: außerhalb der Zeichnungsbefugnis DO.IT</description>
+        <inputEntry id="Rule_VZ_6_In1"><text></text></inputEntry>
+        <outputEntry id="Rule_VZ_6_Out1"><text>"Keine Zeichnungsbefugnis DO.IT (höhere Zuständigkeit)"</text></outputEntry>
+        <outputEntry id="Rule_VZ_6_Out2"><text>"Stadtkämmerei und Rechtsamt"</text></outputEntry>
+        <outputEntry id="Rule_VZ_6_Out3"><text>"§ 25 Abs. 4 ZO"</text></outputEntry>
+      </rule>
+    </decisionTable>
+  </decision>
+
+  <!-- § 29 Abs. 7 ZO: Beschaffung von Geräten, Wartungs- und Softwareverträgen der IuK -->
+  <decision id="Decision_IT_Beschaffung" name="IT-Beschaffung">
+    <decisionTable id="DecisionTable_IT_Beschaffung" hitPolicy="FIRST">
+      <input id="Input_IT_Betrag" label="Kaufpreis / Barwert / Kaufwert (EUR)" camunda:inputVariable="betrag">
+        <inputExpression id="InputExpression_IT_Betrag" typeRef="double">
+          <text>betrag</text>
+        </inputExpression>
+      </input>
+      <output id="Output_IT_Ebene" label="Zeichnungsbefugte Ebene" name="ebene" typeRef="string" />
+      <output id="Output_IT_Einvernehmen" label="Einvernehmen" name="einvernehmen" typeRef="string" />
+      <output id="Output_IT_Grundlage" label="Rechtsgrundlage" name="rechtsgrundlage" typeRef="string" />
+      <rule id="Rule_IT_1">
+        <description>Bis 20.000 EUR: Sachbearbeitung</description>
+        <inputEntry id="Rule_IT_1_In1"><text>&lt;= 20000</text></inputEntry>
+        <outputEntry id="Rule_IT_1_Out1"><text>"SB"</text></outputEntry>
+        <outputEntry id="Rule_IT_1_Out2"><text>""</text></outputEntry>
+        <outputEntry id="Rule_IT_1_Out3"><text>"§ 29 Abs. 7 ZO"</text></outputEntry>
+      </rule>
+      <rule id="Rule_IT_2">
+        <description>Bis 40.000 EUR: TL</description>
+        <inputEntry id="Rule_IT_2_In1"><text>&lt;= 40000</text></inputEntry>
+        <outputEntry id="Rule_IT_2_Out1"><text>"TL"</text></outputEntry>
+        <outputEntry id="Rule_IT_2_Out2"><text>""</text></outputEntry>
+        <outputEntry id="Rule_IT_2_Out3"><text>"§ 29 Abs. 7 ZO"</text></outputEntry>
+      </rule>
+      <rule id="Rule_IT_3">
+        <description>Bis 80.000 EUR: Sachgebietsleitung</description>
+        <inputEntry id="Rule_IT_3_In1"><text>&lt;= 80000</text></inputEntry>
+        <outputEntry id="Rule_IT_3_Out1"><text>"SGL"</text></outputEntry>
+        <outputEntry id="Rule_IT_3_Out2"><text>""</text></outputEntry>
+        <outputEntry id="Rule_IT_3_Out3"><text>"§ 29 Abs. 7 ZO"</text></outputEntry>
+      </rule>
+      <rule id="Rule_IT_4">
+        <description>Bis 120.000 EUR: Abteilungsleitung</description>
+        <inputEntry id="Rule_IT_4_In1"><text>&lt;= 120000</text></inputEntry>
+        <outputEntry id="Rule_IT_4_Out1"><text>"AbtL"</text></outputEntry>
+        <outputEntry id="Rule_IT_4_Out2"><text>""</text></outputEntry>
+        <outputEntry id="Rule_IT_4_Out3"><text>"§ 29 Abs. 7 ZO"</text></outputEntry>
+      </rule>
+      <rule id="Rule_IT_5">
+        <description>Bis 190.000 EUR: Amtsleitung</description>
+        <inputEntry id="Rule_IT_5_In1"><text>&lt;= 190000</text></inputEntry>
+        <outputEntry id="Rule_IT_5_Out1"><text>"AL"</text></outputEntry>
+        <outputEntry id="Rule_IT_5_Out2"><text>""</text></outputEntry>
+        <outputEntry id="Rule_IT_5_Out3"><text>"§ 29 Abs. 7 ZO"</text></outputEntry>
+      </rule>
+      <rule id="Rule_IT_6">
+        <description>Über 190.000 EUR: außerhalb der Zeichnungsbefugnis DO.IT</description>
+        <inputEntry id="Rule_IT_6_In1"><text></text></inputEntry>
+        <outputEntry id="Rule_IT_6_Out1"><text>"Keine Zeichnungsbefugnis DO.IT (höhere Zuständigkeit)"</text></outputEntry>
+        <outputEntry id="Rule_IT_6_Out2"><text>""</text></outputEntry>
+        <outputEntry id="Rule_IT_6_Out3"><text>"§ 29 Abs. 7 ZO"</text></outputEntry>
+      </rule>
+    </decisionTable>
+  </decision>
+
+  <!-- § 20 Abs. 1 ZO: Anmietung beweglicher Gegenstände, Vertragsdauer bis 5 Jahre -->
+  <decision id="Decision_Anmietung" name="Anmietung beweglicher Gegenstände">
+    <decisionTable id="DecisionTable_Anmietung" hitPolicy="FIRST">
+      <input id="Input_AM_Dauer" label="Vertragsdauer (Jahre)" camunda:inputVariable="vertragsdauerJahre">
+        <inputExpression id="InputExpression_AM_Dauer" typeRef="integer">
+          <text>vertragsdauerJahre</text>
+        </inputExpression>
+      </input>
+      <input id="Input_AM_Betrag" label="Jährlicher Mietwert je Gegenstand (EUR)" camunda:inputVariable="betrag">
+        <inputExpression id="InputExpression_AM_Betrag" typeRef="double">
+          <text>betrag</text>
+        </inputExpression>
+      </input>
+      <output id="Output_AM_Ebene" label="Zeichnungsbefugte Ebene" name="ebene" typeRef="string" />
+      <output id="Output_AM_Einvernehmen" label="Einvernehmen" name="einvernehmen" typeRef="string" />
+      <output id="Output_AM_Grundlage" label="Rechtsgrundlage" name="rechtsgrundlage" typeRef="string" />
+      <rule id="Rule_AM_1">
+        <description>Vertragsdauer über 5 Jahre: außerhalb der Zeichnungsbefugnis DO.IT</description>
+        <inputEntry id="Rule_AM_1_In1"><text>&gt; 5</text></inputEntry>
+        <inputEntry id="Rule_AM_1_In2"><text></text></inputEntry>
+        <outputEntry id="Rule_AM_1_Out1"><text>"Keine Zeichnungsbefugnis DO.IT (höhere Zuständigkeit)"</text></outputEntry>
+        <outputEntry id="Rule_AM_1_Out2"><text>""</text></outputEntry>
+        <outputEntry id="Rule_AM_1_Out3"><text>"§ 20 Abs. 1 ZO"</text></outputEntry>
+      </rule>
+      <rule id="Rule_AM_2">
+        <description>Bis 10.000 EUR: TL</description>
+        <inputEntry id="Rule_AM_2_In1"><text></text></inputEntry>
+        <inputEntry id="Rule_AM_2_In2"><text>&lt;= 10000</text></inputEntry>
+        <outputEntry id="Rule_AM_2_Out1"><text>"TL"</text></outputEntry>
+        <outputEntry id="Rule_AM_2_Out2"><text>""</text></outputEntry>
+        <outputEntry id="Rule_AM_2_Out3"><text>"§ 20 Abs. 1 ZO"</text></outputEntry>
+      </rule>
+      <rule id="Rule_AM_3">
+        <description>Bis 20.000 EUR: Sachgebietsleitung</description>
+        <inputEntry id="Rule_AM_3_In1"><text></text></inputEntry>
+        <inputEntry id="Rule_AM_3_In2"><text>&lt;= 20000</text></inputEntry>
+        <outputEntry id="Rule_AM_3_Out1"><text>"SGL"</text></outputEntry>
+        <outputEntry id="Rule_AM_3_Out2"><text>""</text></outputEntry>
+        <outputEntry id="Rule_AM_3_Out3"><text>"§ 20 Abs. 1 ZO"</text></outputEntry>
+      </rule>
+      <rule id="Rule_AM_4">
+        <description>Bis 30.000 EUR: Abteilungsleitung</description>
+        <inputEntry id="Rule_AM_4_In1"><text></text></inputEntry>
+        <inputEntry id="Rule_AM_4_In2"><text>&lt;= 30000</text></inputEntry>
+        <outputEntry id="Rule_AM_4_Out1"><text>"AbtL"</text></outputEntry>
+        <outputEntry id="Rule_AM_4_Out2"><text>""</text></outputEntry>
+        <outputEntry id="Rule_AM_4_Out3"><text>"§ 20 Abs. 1 ZO"</text></outputEntry>
+      </rule>
+      <rule id="Rule_AM_5">
+        <description>Bis 50.000 EUR: Amtsleitung</description>
+        <inputEntry id="Rule_AM_5_In1"><text></text></inputEntry>
+        <inputEntry id="Rule_AM_5_In2"><text>&lt;= 50000</text></inputEntry>
+        <outputEntry id="Rule_AM_5_Out1"><text>"AL"</text></outputEntry>
+        <outputEntry id="Rule_AM_5_Out2"><text>""</text></outputEntry>
+        <outputEntry id="Rule_AM_5_Out3"><text>"§ 20 Abs. 1 ZO"</text></outputEntry>
+      </rule>
+      <rule id="Rule_AM_6">
+        <description>Über 50.000 EUR: außerhalb der Zeichnungsbefugnis DO.IT</description>
+        <inputEntry id="Rule_AM_6_In1"><text></text></inputEntry>
+        <inputEntry id="Rule_AM_6_In2"><text></text></inputEntry>
+        <outputEntry id="Rule_AM_6_Out1"><text>"Keine Zeichnungsbefugnis DO.IT (höhere Zuständigkeit)"</text></outputEntry>
+        <outputEntry id="Rule_AM_6_Out2"><text>""</text></outputEntry>
+        <outputEntry id="Rule_AM_6_Out3"><text>"§ 20 Abs. 1 ZO"</text></outputEntry>
+      </rule>
+    </decisionTable>
+  </decision>
+
+  <dmndi:DMNDI>
+    <dmndi:DMNDiagram id="DMNDiagram_1">
+      <dmndi:DMNShape id="DMNShape_Beschaffung_Art_Umfang" dmnElementRef="Decision_Beschaffung_Art_Umfang">
+        <dc:Bounds height="80" width="180" x="160" y="100" />
+      </dmndi:DMNShape>
+      <dmndi:DMNShape id="DMNShape_Vergabe" dmnElementRef="Decision_Vergabe">
+        <dc:Bounds height="80" width="180" x="380" y="100" />
+      </dmndi:DMNShape>
+      <dmndi:DMNShape id="DMNShape_Vorauszahlung" dmnElementRef="Decision_Vorauszahlung">
+        <dc:Bounds height="80" width="180" x="600" y="100" />
+      </dmndi:DMNShape>
+      <dmndi:DMNShape id="DMNShape_IT_Beschaffung" dmnElementRef="Decision_IT_Beschaffung">
+        <dc:Bounds height="80" width="180" x="160" y="220" />
+      </dmndi:DMNShape>
+      <dmndi:DMNShape id="DMNShape_Anmietung" dmnElementRef="Decision_Anmietung">
+        <dc:Bounds height="80" width="180" x="380" y="220" />
+      </dmndi:DMNShape>
+    </dmndi:DMNDiagram>
+  </dmndi:DMNDI>
+</definitions>

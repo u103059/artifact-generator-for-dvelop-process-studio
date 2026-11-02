@@ -1,0 +1,233 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<definitions xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL"
+             xmlns:camunda="http://camunda.org/schema/1.0/bpmn"
+             xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI"
+             xmlns:dc="http://www.omg.org/spec/DD/20100524/DC"
+             xmlns:di="http://www.omg.org/spec/DD/20100524/DI"
+             targetNamespace=""
+             exporter="d.velop process modeler"
+             exporterVersion="1.0.0">
+  <process id="schule_an_weiterfuehrender_schule_anmelden" name="Schule an weiterf&#252;hrender Schule anmelden" isExecutable="true">
+    <documentation>Sequenzieller Happy Path der Anmeldung an einer weiterf&#252;hrenden Schule mit vollst&#228;ndigen Unterlagen und verf&#252;gbarem Schulplatz. Beteiligt sind die Sorgeberechtigten, die Schule und das Schulverwaltungsamt. Da alle Rollen im selben Prozess arbeiten, werden Sequenzfl&#252;sse statt Nachrichtenfl&#252;ssen zwischen Pools verwendet. Vor der Bereitstellung sind das verkn&#252;pfte Anmeldeformular zu importieren, die Daten&#252;bergabe einzurichten und die zust&#228;ndigen Personen festzulegen. Aktuelle Anmeldevorgaben, schulartspezifische Voraussetzungen und Zust&#228;ndigkeiten sind fachlich zu best&#228;tigen.</documentation>
+    <extensionElements>
+      <camunda:properties>
+        <camunda:property name="variable:sachbearbeitung_schule*" value="Identity!" />
+        <camunda:property name="variable:sachbearbeitung_schulverwaltungsamt*" value="Identity!" />
+        <camunda:property name="variable:kind_vorname" value="String" />
+        <camunda:property name="variable:kind_nachname" value="String" />
+        <camunda:property name="variable:wunschschule" value="String" />
+        <camunda:property name="variable:schulart" value="String" />
+      </camunda:properties>
+    </extensionElements>
+    <laneSet id="lane_set_rollen">
+      <lane id="lane_sorgeberechtigte" name="Sorgeberechtigte">
+        <flowNodeRef>start_bedarf_festgestellt</flowNodeRef>
+        <flowNodeRef>task_anmeldeformular_einreichen</flowNodeRef>
+        <flowNodeRef>task_anmeldebestaetigung_entgegennehmen</flowNodeRef>
+        <flowNodeRef>end_anmeldebestaetigung_erhalten</flowNodeRef>
+      </lane>
+      <lane id="lane_schule" name="Schule">
+        <flowNodeRef>task_anmeldung_entgegennehmen</flowNodeRef>
+        <flowNodeRef>task_unterlagen_pruefen</flowNodeRef>
+        <flowNodeRef>task_daten_erfassen</flowNodeRef>
+        <flowNodeRef>task_daten_melden</flowNodeRef>
+        <flowNodeRef>task_aufnahme_bestaetigen</flowNodeRef>
+        <flowNodeRef>task_bestaetigung_versenden</flowNodeRef>
+      </lane>
+      <lane id="lane_schulverwaltungsamt" name="Schulverwaltungsamt">
+        <flowNodeRef>task_platzvergabe_pruefen</flowNodeRef>
+        <flowNodeRef>task_anmeldung_erfassen</flowNodeRef>
+        <flowNodeRef>task_platzzuordnung_bestaetigen</flowNodeRef>
+      </lane>
+    </laneSet>
+    <startEvent id="start_bedarf_festgestellt" name="Bedarf an Anmeldung an weiterf&#252;hrender Schule festgestellt">
+      <outgoing>flow_start_einreichen</outgoing>
+    </startEvent>
+    <userTask id="task_anmeldeformular_einreichen" name="Anmeldeformular ausf&#252;llen und einreichen" camunda:formKey="c3b7e1a4-5d92-4f08-b6a1-9e4d7c2f8a35" camunda:candidateUsers="${variables.get('dv_initiator')}" camunda:priority="50">
+      <documentation>Die Sorgeberechtigten erfassen im verkn&#252;pften Formular die Angaben zum Kind (kindVorname, kindNachname, kindGeburtsdatum, kindGeburtsort, kindStrasse, kindPlz, kindOrt, bisherigeGrundschule), zu den Sorgeberechtigten (vorname, nachname, email, telefon) und zur gew&#252;nschten Schule (wunschschule, schulart, zusatzangaben) und best&#228;tigen Nachweise, Datenschutz und Richtigkeit (nachweiseBeigefuegt, datenschutzAkzeptiert, richtigkeitBestaetigt). Bei der Einrichtung der Daten&#252;bergabe sind kindVorname auf kind_vorname, kindNachname auf kind_nachname, wunschschule auf wunschschule und schulart auf schulart abzubilden. Das Absenden schlie&#223;t die Aufgabe ab. Beizuf&#252;gen sind Grundschulempfehlung, Geburtsurkunde und Nachweis des Wohnsitzes.</documentation>
+      <incoming>flow_start_einreichen</incoming>
+      <outgoing>flow_einreichen_entgegennehmen</outgoing>
+    </userTask>
+    <userTask id="task_anmeldung_entgegennehmen" name="Anmeldung entgegennehmen" camunda:candidateUsers="${variables.get('sachbearbeitung_schule')}" camunda:priority="50">
+      <documentation>Die Schule nimmt die eingegangene Anmeldung mit den beigef&#252;gten Unterlagen entgegen und nimmt sie in Bearbeitung.</documentation>
+      <incoming>flow_einreichen_entgegennehmen</incoming>
+      <outgoing>flow_entgegennehmen_pruefen</outgoing>
+    </userTask>
+    <userTask id="task_unterlagen_pruefen" name="Anmeldeunterlagen auf Vollst&#228;ndigkeit pr&#252;fen" camunda:candidateUsers="${variables.get('sachbearbeitung_schule')}" camunda:priority="50">
+      <documentation>Die Schule pr&#252;ft, ob Anmeldeformular, Grundschulempfehlung, Geburtsurkunde und Wohnsitznachweis vollst&#228;ndig vorliegen. Im betrachteten Happy Path sind alle Unterlagen vollst&#228;ndig.</documentation>
+      <incoming>flow_entgegennehmen_pruefen</incoming>
+      <outgoing>flow_pruefen_erfassen</outgoing>
+    </userTask>
+    <userTask id="task_daten_erfassen" name="Sch&#252;ler- und Anmeldedaten erfassen" camunda:candidateUsers="${variables.get('sachbearbeitung_schule')}" camunda:priority="50">
+      <documentation>Die Schule erfasst die Sch&#252;ler- und Anmeldedaten des Kindes aus den gepr&#252;ften Unterlagen.</documentation>
+      <incoming>flow_pruefen_erfassen</incoming>
+      <outgoing>flow_erfassen_melden</outgoing>
+    </userTask>
+    <userTask id="task_daten_melden" name="Anmeldedaten an Schulverwaltungsamt melden" camunda:candidateUsers="${variables.get('sachbearbeitung_schule')}" camunda:priority="50">
+      <documentation>Die Schule meldet die erfassten Anmeldedaten des Kindes zur Pr&#252;fung der Platzzuordnung an das Schulverwaltungsamt.</documentation>
+      <incoming>flow_erfassen_melden</incoming>
+      <outgoing>flow_melden_platzvergabe</outgoing>
+    </userTask>
+    <userTask id="task_platzvergabe_pruefen" name="Schulbezirkszuordnung und Schulplatzvergabe pr&#252;fen" camunda:candidateUsers="${variables.get('sachbearbeitung_schulverwaltungsamt')}" camunda:priority="50">
+      <documentation>Das Schulverwaltungsamt nimmt die gemeldeten Anmeldedaten entgegen und pr&#252;ft die Schulbezirkszuordnung sowie die Schulplatzvergabe. Im betrachteten Happy Path ist ein Schulplatz verf&#252;gbar und die Zuordnung zul&#228;ssig.</documentation>
+      <incoming>flow_melden_platzvergabe</incoming>
+      <outgoing>flow_platzvergabe_erfassen</outgoing>
+    </userTask>
+    <userTask id="task_anmeldung_erfassen" name="Anmeldung im Schulverwaltungssystem erfassen" camunda:candidateUsers="${variables.get('sachbearbeitung_schulverwaltungsamt')}" camunda:priority="50">
+      <documentation>Das Schulverwaltungsamt erfasst die Anmeldung und die Platzzuordnung nachvollziehbar im Schulverwaltungssystem.</documentation>
+      <incoming>flow_platzvergabe_erfassen</incoming>
+      <outgoing>flow_erfassen_zuordnung</outgoing>
+    </userTask>
+    <userTask id="task_platzzuordnung_bestaetigen" name="Platzzuordnung an Schule best&#228;tigen" camunda:candidateUsers="${variables.get('sachbearbeitung_schulverwaltungsamt')}" camunda:priority="50">
+      <documentation>Das Schulverwaltungsamt best&#228;tigt der Schule die Platzzuordnung des Kindes als Grundlage der Aufnahme.</documentation>
+      <incoming>flow_erfassen_zuordnung</incoming>
+      <outgoing>flow_zuordnung_aufnahme</outgoing>
+    </userTask>
+    <userTask id="task_aufnahme_bestaetigen" name="Aufnahme best&#228;tigen und Anmeldebest&#228;tigung erstellen" camunda:candidateUsers="${variables.get('sachbearbeitung_schule')}" camunda:priority="50">
+      <documentation>Die Schule best&#228;tigt auf Grundlage der Platzzuordnung die Aufnahme des Kindes und erstellt die Anmeldebest&#228;tigung.</documentation>
+      <incoming>flow_zuordnung_aufnahme</incoming>
+      <outgoing>flow_aufnahme_versenden</outgoing>
+    </userTask>
+    <userTask id="task_bestaetigung_versenden" name="Anmeldebest&#228;tigung versenden" camunda:candidateUsers="${variables.get('sachbearbeitung_schule')}" camunda:priority="50">
+      <documentation>Die Schule versendet die Anmeldebest&#228;tigung an die Sorgeberechtigten.</documentation>
+      <incoming>flow_aufnahme_versenden</incoming>
+      <outgoing>flow_versenden_entgegennehmen</outgoing>
+    </userTask>
+    <userTask id="task_anmeldebestaetigung_entgegennehmen" name="Anmeldebest&#228;tigung entgegennehmen" camunda:candidateUsers="${variables.get('dv_initiator')}" camunda:priority="50">
+      <documentation>Die Sorgeberechtigten erhalten die Anmeldebest&#228;tigung der Schule. Der Schulplatz f&#252;r das Kind ist damit best&#228;tigt.</documentation>
+      <incoming>flow_versenden_entgegennehmen</incoming>
+      <outgoing>flow_entgegennehmen_ende</outgoing>
+    </userTask>
+    <endEvent id="end_anmeldebestaetigung_erhalten" name="Anmeldebest&#228;tigung erhalten">
+      <incoming>flow_entgegennehmen_ende</incoming>
+    </endEvent>
+    <sequenceFlow id="flow_start_einreichen" sourceRef="start_bedarf_festgestellt" targetRef="task_anmeldeformular_einreichen" />
+    <sequenceFlow id="flow_einreichen_entgegennehmen" sourceRef="task_anmeldeformular_einreichen" targetRef="task_anmeldung_entgegennehmen" />
+    <sequenceFlow id="flow_entgegennehmen_pruefen" sourceRef="task_anmeldung_entgegennehmen" targetRef="task_unterlagen_pruefen" />
+    <sequenceFlow id="flow_pruefen_erfassen" sourceRef="task_unterlagen_pruefen" targetRef="task_daten_erfassen" />
+    <sequenceFlow id="flow_erfassen_melden" sourceRef="task_daten_erfassen" targetRef="task_daten_melden" />
+    <sequenceFlow id="flow_melden_platzvergabe" sourceRef="task_daten_melden" targetRef="task_platzvergabe_pruefen" />
+    <sequenceFlow id="flow_platzvergabe_erfassen" sourceRef="task_platzvergabe_pruefen" targetRef="task_anmeldung_erfassen" />
+    <sequenceFlow id="flow_erfassen_zuordnung" sourceRef="task_anmeldung_erfassen" targetRef="task_platzzuordnung_bestaetigen" />
+    <sequenceFlow id="flow_zuordnung_aufnahme" sourceRef="task_platzzuordnung_bestaetigen" targetRef="task_aufnahme_bestaetigen" />
+    <sequenceFlow id="flow_aufnahme_versenden" sourceRef="task_aufnahme_bestaetigen" targetRef="task_bestaetigung_versenden" />
+    <sequenceFlow id="flow_versenden_entgegennehmen" sourceRef="task_bestaetigung_versenden" targetRef="task_anmeldebestaetigung_entgegennehmen" />
+    <sequenceFlow id="flow_entgegennehmen_ende" sourceRef="task_anmeldebestaetigung_entgegennehmen" targetRef="end_anmeldebestaetigung_erhalten" />
+  </process>
+  <collaboration id="collaboration_schulanmeldung">
+    <participant id="participant_schulanmeldung" name="Schule an weiterf&#252;hrender Schule anmelden" processRef="schule_an_weiterfuehrender_schule_anmelden" />
+  </collaboration>
+  <bpmndi:BPMNDiagram id="diagram_schulanmeldung">
+    <bpmndi:BPMNPlane id="plane_schulanmeldung" bpmnElement="collaboration_schulanmeldung">
+      <bpmndi:BPMNShape id="participant_schulanmeldung_di" bpmnElement="participant_schulanmeldung" isHorizontal="true">
+        <dc:Bounds x="80" y="80" width="2480" height="480" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="lane_sorgeberechtigte_di" bpmnElement="lane_sorgeberechtigte" isHorizontal="true">
+        <dc:Bounds x="110" y="80" width="2450" height="160" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="lane_schule_di" bpmnElement="lane_schule" isHorizontal="true">
+        <dc:Bounds x="110" y="240" width="2450" height="160" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="lane_schulverwaltungsamt_di" bpmnElement="lane_schulverwaltungsamt" isHorizontal="true">
+        <dc:Bounds x="110" y="400" width="2450" height="160" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="start_bedarf_festgestellt_di" bpmnElement="start_bedarf_festgestellt">
+        <dc:Bounds x="170" y="142" width="36" height="36" />
+        <bpmndi:BPMNLabel><dc:Bounds x="128" y="185" width="120" height="70" /></bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="task_anmeldeformular_einreichen_di" bpmnElement="task_anmeldeformular_einreichen">
+        <dc:Bounds x="260" y="120" width="140" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="task_anmeldung_entgegennehmen_di" bpmnElement="task_anmeldung_entgegennehmen">
+        <dc:Bounds x="460" y="280" width="140" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="task_unterlagen_pruefen_di" bpmnElement="task_unterlagen_pruefen">
+        <dc:Bounds x="660" y="280" width="140" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="task_daten_erfassen_di" bpmnElement="task_daten_erfassen">
+        <dc:Bounds x="860" y="280" width="140" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="task_daten_melden_di" bpmnElement="task_daten_melden">
+        <dc:Bounds x="1060" y="280" width="140" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="task_platzvergabe_pruefen_di" bpmnElement="task_platzvergabe_pruefen">
+        <dc:Bounds x="1260" y="440" width="140" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="task_anmeldung_erfassen_di" bpmnElement="task_anmeldung_erfassen">
+        <dc:Bounds x="1460" y="440" width="140" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="task_platzzuordnung_bestaetigen_di" bpmnElement="task_platzzuordnung_bestaetigen">
+        <dc:Bounds x="1660" y="440" width="140" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="task_aufnahme_bestaetigen_di" bpmnElement="task_aufnahme_bestaetigen">
+        <dc:Bounds x="1860" y="280" width="140" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="task_bestaetigung_versenden_di" bpmnElement="task_bestaetigung_versenden">
+        <dc:Bounds x="2060" y="280" width="140" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="task_anmeldebestaetigung_entgegennehmen_di" bpmnElement="task_anmeldebestaetigung_entgegennehmen">
+        <dc:Bounds x="2260" y="120" width="140" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="end_anmeldebestaetigung_erhalten_di" bpmnElement="end_anmeldebestaetigung_erhalten">
+        <dc:Bounds x="2460" y="142" width="36" height="36" />
+        <bpmndi:BPMNLabel><dc:Bounds x="2418" y="185" width="120" height="50" /></bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="flow_start_einreichen_di" bpmnElement="flow_start_einreichen">
+        <di:waypoint x="206" y="160" />
+        <di:waypoint x="260" y="160" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="flow_einreichen_entgegennehmen_di" bpmnElement="flow_einreichen_entgegennehmen">
+        <di:waypoint x="400" y="160" />
+        <di:waypoint x="430" y="160" />
+        <di:waypoint x="430" y="320" />
+        <di:waypoint x="460" y="320" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="flow_entgegennehmen_pruefen_di" bpmnElement="flow_entgegennehmen_pruefen">
+        <di:waypoint x="600" y="320" />
+        <di:waypoint x="660" y="320" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="flow_pruefen_erfassen_di" bpmnElement="flow_pruefen_erfassen">
+        <di:waypoint x="800" y="320" />
+        <di:waypoint x="860" y="320" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="flow_erfassen_melden_di" bpmnElement="flow_erfassen_melden">
+        <di:waypoint x="1000" y="320" />
+        <di:waypoint x="1060" y="320" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="flow_melden_platzvergabe_di" bpmnElement="flow_melden_platzvergabe">
+        <di:waypoint x="1200" y="320" />
+        <di:waypoint x="1230" y="320" />
+        <di:waypoint x="1230" y="480" />
+        <di:waypoint x="1260" y="480" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="flow_platzvergabe_erfassen_di" bpmnElement="flow_platzvergabe_erfassen">
+        <di:waypoint x="1400" y="480" />
+        <di:waypoint x="1460" y="480" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="flow_erfassen_zuordnung_di" bpmnElement="flow_erfassen_zuordnung">
+        <di:waypoint x="1600" y="480" />
+        <di:waypoint x="1660" y="480" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="flow_zuordnung_aufnahme_di" bpmnElement="flow_zuordnung_aufnahme">
+        <di:waypoint x="1800" y="480" />
+        <di:waypoint x="1830" y="480" />
+        <di:waypoint x="1830" y="320" />
+        <di:waypoint x="1860" y="320" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="flow_aufnahme_versenden_di" bpmnElement="flow_aufnahme_versenden">
+        <di:waypoint x="2000" y="320" />
+        <di:waypoint x="2060" y="320" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="flow_versenden_entgegennehmen_di" bpmnElement="flow_versenden_entgegennehmen">
+        <di:waypoint x="2200" y="320" />
+        <di:waypoint x="2230" y="320" />
+        <di:waypoint x="2230" y="160" />
+        <di:waypoint x="2260" y="160" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="flow_entgegennehmen_ende_di" bpmnElement="flow_entgegennehmen_ende">
+        <di:waypoint x="2400" y="160" />
+        <di:waypoint x="2460" y="160" />
+      </bpmndi:BPMNEdge>
+    </bpmndi:BPMNPlane>
+  </bpmndi:BPMNDiagram>
+</definitions>

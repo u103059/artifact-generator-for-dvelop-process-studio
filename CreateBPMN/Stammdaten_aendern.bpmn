@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<definitions xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:camunda="http://camunda.org/schema/1.0/bpmn" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" targetNamespace="" exporter="d.velop process modeler" exporterVersion="1.0.0">
+  <process id="stammdaten_aendern_process" name="Stammdaten ändern" isExecutable="true">
+    <startEvent id="start" name="Änderungsantrag eingegangen" />
+    <sequenceFlow id="s1" sourceRef="start" targetRef="task_antrag_pruefen" />
+    
+    <userTask id="task_antrag_pruefen" name="Antrag prüfen" camunda:candidateUsers="${variables.get('dv_initiator')}" camunda:priority="50" />
+    <sequenceFlow id="s2" sourceRef="task_antrag_pruefen" targetRef="task_identitaet_verifizieren" />
+    
+    <userTask id="task_identitaet_verifizieren" name="Identität verifizieren" camunda:candidateUsers="${variables.get('dv_initiator')}" camunda:priority="50" />
+    <sequenceFlow id="s3" sourceRef="task_identitaet_verifizieren" targetRef="task_aenderungsberechtigung_pruefen" />
+    
+    <userTask id="task_aenderungsberechtigung_pruefen" name="Änderungsberechtigung prüfen" camunda:candidateUsers="${variables.get('dv_initiator')}" camunda:priority="50" />
+    <sequenceFlow id="s4" sourceRef="task_aenderungsberechtigung_pruefen" targetRef="task_nachweise_pruefen" />
+    
+    <userTask id="task_nachweise_pruefen" name="Nachweise prüfen" camunda:candidateUsers="${variables.get('dv_initiator')}" camunda:priority="50" />
+    <sequenceFlow id="s5" sourceRef="task_nachweise_pruefen" targetRef="task_stammdaten_aktualisieren" />
+    
+    <userTask id="task_stammdaten_aktualisieren" name="Stammdaten aktualisieren" camunda:candidateUsers="${variables.get('dv_initiator')}" camunda:priority="50" />
+    <sequenceFlow id="s6" sourceRef="task_stammdaten_aktualisieren" targetRef="task_aenderungsbestaetigung_erstellen" />
+    
+    <userTask id="task_aenderungsbestaetigung_erstellen" name="Änderungsbestätigung erstellen" camunda:candidateUsers="${variables.get('dv_initiator')}" camunda:priority="50" />
+    <sequenceFlow id="s7" sourceRef="task_aenderungsbestaetigung_erstellen" targetRef="task_bestaetigung_versenden" />
+    
+    <userTask id="task_bestaetigung_versenden" name="Bestätigung versenden" camunda:candidateUsers="${variables.get('dv_initiator')}" camunda:priority="50" />
+    <sequenceFlow id="s8" sourceRef="task_bestaetigung_versenden" targetRef="end" />
+    
+    <endEvent id="end" name="Stammdaten geändert" />
+  </process>
+    
+  <!-- Diagram information -->
+  <bpmndi:BPMNDiagram id="BPMNDiagram_1">
+    <bpmndi:BPMNPlane id="BPMNPlane" bpmnElement="stammdaten_aendern_process">
+      <bpmndi:BPMNShape id="start_di" bpmnElement="start">
+        <dc:Bounds x="173" y="102" width="36" height="36" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="157" y="145" width="68" height="27" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="s1_di" bpmnElement="s1">
+        <di:waypoint x="209" y="120" />
+        <di:waypoint x="259" y="120" />
+      </bpmndi:BPMNEdge>
+      
+      <bpmndi:BPMNShape id="task_antrag_pruefen_di" bpmnElement="task_antrag_pruefen">
+        <dc:Bounds x="259" y="80" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="s2_di" bpmnElement="s2">
+        <di:waypoint x="359" y="120" />
+        <di:waypoint x="409" y="120" />
+      </bpmndi:BPMNEdge>
+      
+      <bpmndi:BPMNShape id="task_identitaet_verifizieren_di" bpmnElement="task_identitaet_verifizieren">
+        <dc:Bounds x="409" y="80" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="s3_di" bpmnElement="s3">
+        <di:waypoint x="509" y="120" />
+        <di:waypoint x="559" y="120" />
+      </bpmndi:BPMNEdge>
+      
+      <bpmndi:BPMNShape id="task_aenderungsberechtigung_pruefen_di" bpmnElement="task_aenderungsberechtigung_pruefen">
+        <dc:Bounds x="559" y="80" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="s4_di" bpmnElement="s4">
+        <di:waypoint x="659" y="120" />
+        <di:waypoint x="709" y="120" />
+      </bpmndi:BPMNEdge>
+      
+      <bpmndi:BPMNShape id="task_nachweise_pruefen_di" bpmnElement="task_nachweise_pruefen">
+        <dc:Bounds x="709" y="80" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="s5_di" bpmnElement="s5">
+        <di:waypoint x="809" y="120" />
+        <di:waypoint x="859" y="120" />
+      </bpmndi:BPMNEdge>
+      
+      <bpmndi:BPMNShape id="task_stammdaten_aktualisieren_di" bpmnElement="task_stammdaten_aktualisieren">
+        <dc:Bounds x="859" y="80" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="s6_di" bpmnElement="s6">
+        <di:waypoint x="959" y="120" />
+        <di:waypoint x="1009" y="120" />
+      </bpmndi:BPMNEdge>
+      
+      <bpmndi:BPMNShape id="task_aenderungsbestaetigung_erstellen_di" bpmnElement="task_aenderungsbestaetigung_erstellen">
+        <dc:Bounds x="1009" y="80" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="s7_di" bpmnElement="s7">
+        <di:waypoint x="1109" y="120" />
+        <di:waypoint x="1159" y="120" />
+      </bpmndi:BPMNEdge>
+      
+      <bpmndi:BPMNShape id="task_bestaetigung_versenden_di" bpmnElement="task_bestaetigung_versenden">
+        <dc:Bounds x="1159" y="80" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="s8_di" bpmnElement="s8">
+        <di:waypoint x="1259" y="120" />
+        <di:waypoint x="1309" y="120" />
+      </bpmndi:BPMNEdge>
+      
+      <bpmndi:BPMNShape id="end_di" bpmnElement="end">
+        <dc:Bounds x="1309" y="102" width="36" height="36" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="1297" y="145" width="60" height="27" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+    </bpmndi:BPMNPlane>
+  </bpmndi:BPMNDiagram>
+</definitions>

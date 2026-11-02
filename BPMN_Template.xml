@@ -1,0 +1,300 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+================================================================================
+BPMN TEMPLATE FÜR D.VELOP PROCESS STUDIO
+================================================================================
+Dieses Template dient als Vorlage für die Erstellung von BPMN-Prozessmodellen,
+die in d.velop process studio importiert werden können.
+
+VERWENDUNG:
+1. Kopieren Sie dieses Template
+2. Ersetzen Sie alle Platzhalter (gekennzeichnet mit {{PLATZHALTER}})
+3. Fügen Sie Ihre Prozesselemente hinzu
+4. Passen Sie die Diagram-Informationen (Koordinaten) an
+
+WICHTIGE HINWEISE:
+- Alle IDs müssen eindeutig sein
+- Verwenden Sie snake_case für IDs (z.B. task_approve_request)
+- Exporter muss "d.velop process modeler" sein
+- isExecutable muss "true" sein für ausführbare Prozesse
+================================================================================
+-->
+<definitions 
+    xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL" 
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+    xmlns:camunda="http://camunda.org/schema/1.0/bpmn" 
+    xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" 
+    xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" 
+    xmlns:di="http://www.omg.org/spec/DD/20100524/DI" 
+    targetNamespace="" 
+    exporter="d.velop process modeler" 
+    exporterVersion="1.0.0">
+
+  <!-- 
+  ============================================================================
+  PROZESS-DEFINITION
+  ============================================================================
+  id: Eindeutige Prozess-ID (snake_case, z.B. "my_process")
+  name: Anzeigename des Prozesses
+  isExecutable: "true" für ausführbare Prozesse
+  -->
+  <process id="{{PROCESS_ID}}" name="{{PROCESS_NAME}}" isExecutable="true">
+    
+    <!--
+    ==========================================================================
+    PROZESS-VARIABLEN (OPTIONAL)
+    ==========================================================================
+    Definieren Sie hier Prozessvariablen. Verfügbare Typen:
+    - String, String!     (Text, ! = Pflichtfeld)
+    - Number, Number!     (Zahl)
+    - Boolean, Boolean!   (Ja/Nein)
+    - Date, Date!         (Datum)
+    - Identity, Identity! (Benutzer/Gruppe)
+    - [String], [String]! (Array von Strings)
+    - [Identity], [Identity]! (Array von Identities)
+    
+    Format: name="variable:variablenname*" value="Typ!"
+    * = Eingabevariable (wird beim Prozessstart abgefragt)
+    ! = Pflichtfeld
+    -->
+    <extensionElements>
+      <camunda:properties>
+        <!-- Beispiel-Variablen (entfernen oder anpassen): -->
+        <!-- <camunda:property name="variable:eingabe_text*" value="String!" /> -->
+        <!-- <camunda:property name="variable:eingabe_zahl*" value="Number!" /> -->
+        <!-- <camunda:property name="variable:eingabe_datum*" value="Date" /> -->
+        <!-- <camunda:property name="variable:bearbeiter" value="Identity" /> -->
+        <!-- <camunda:property name="variable:teilnehmer*" value="[Identity]!" /> -->
+        
+        <!-- Service-Definitionen (falls Services verwendet werden): -->
+        <!-- <camunda:property name="service:/process/services/{{SERVICE_PATH}}/sync:in:{{INPUT_PARAM}}" value="String" /> -->
+        <!-- <camunda:property name="service:/process/services/{{SERVICE_PATH}}/sync:out:{{OUTPUT_PARAM}}" value="String" /> -->
+        <!-- <camunda:property name="service:/process/services/{{SERVICE_PATH}}/sync:name" value="{{SERVICE_NAME}}" /> -->
+      </camunda:properties>
+    </extensionElements>
+
+    <!-- 
+    ==========================================================================
+    START EVENT
+    ==========================================================================
+    Jeder Prozess muss genau ein Start Event haben.
+    -->
+    <startEvent id="start" />
+
+    <!-- 
+    ==========================================================================
+    USER TASK (Benutzeraufgabe)
+    ==========================================================================
+    Attribute:
+    - id: Eindeutige ID
+    - name: Anzeigename (kann Variablen enthalten: ${variables.get('varname')})
+    - camunda:candidateUsers: Benutzer-Zuweisung (meist ${variables.get('dv_initiator')})
+    - camunda:priority: Priorität (1-100, Standard: 50)
+    - camunda:dueDate: Fälligkeitsdatum (optional)
+    - camunda:formKey: Formular-Referenz (optional)
+    -->
+    <userTask id="task_example" 
+              name="{{TASK_NAME}}" 
+              camunda:candidateUsers="${variables.get('dv_initiator')}" 
+              camunda:priority="50">
+      <!-- Optionale Form-Referenz: -->
+      <!-- <extensionElements>
+        <camunda:formData>
+          <camunda:formField id="formField" label="Label" type="string" />
+        </camunda:formData>
+      </extensionElements> -->
+    </userTask>
+
+    <!-- 
+    ==========================================================================
+    SERVICE TASK (Synchroner Service-Aufruf)
+    ==========================================================================
+    Für den Aufruf externer Services.
+    -->
+    <!-- <sendTask id="task_call_service"
+              name="{{SERVICE_TASK_NAME}}"
+              camunda:asyncBefore="true"
+              camunda:asyncAfter="true"
+              camunda:delegateExpression="${syncService}"
+              camunda:exclusive="true">
+      <extensionElements>
+        <camunda:inputOutput>
+          <camunda:inputParameter name="service.uri">/process/services/{{SERVICE_PATH}}/sync</camunda:inputParameter>
+          <camunda:inputParameter name="{{INPUT_PARAM}}">${variables.get('{{INPUT_VAR}}')}</camunda:inputParameter>
+          <camunda:outputParameter name="{{OUTPUT_PARAM}}">${variables.get("{{OUTPUT_VAR}}")}</camunda:outputParameter>
+        </camunda:inputOutput>
+      </extensionElements>
+    </sendTask> -->
+
+    <!-- 
+    ==========================================================================
+    EXCLUSIVE GATEWAY (XOR-Gateway)
+    ==========================================================================
+    Für Verzweigungen mit exklusiver Auswahl (entweder/oder).
+    Attribute:
+    - default: ID des Standard-Pfades (wenn keine Bedingung zutrifft)
+    -->
+    <!-- <exclusiveGateway id="gateway_decision" default="flow_default" /> -->
+
+    <!-- 
+    ==========================================================================
+    PARALLEL GATEWAY (AND-Gateway)
+    ==========================================================================
+    Für parallele Ausführung mehrerer Pfade.
+    -->
+    <!-- <parallelGateway id="gateway_parallel_split" />
+    <parallelGateway id="gateway_parallel_join" /> -->
+
+    <!-- 
+    ==========================================================================
+    TIMER BOUNDARY EVENT
+    ==========================================================================
+    Zeitbasierte Unterbrechung einer Aktivität.
+    Zeitformate (ISO 8601):
+    - PT1M = 1 Minute
+    - PT1H = 1 Stunde
+    - PT1D = 1 Tag (nicht unterstützt, verwende P1D)
+    - P1D = 1 Tag
+    - P7D = 7 Tage
+    -->
+    <!-- <boundaryEvent id="timer_boundary" attachedToRef="task_example">
+      <timerEventDefinition>
+        <timeDuration>PT1H</timeDuration>
+      </timerEventDefinition>
+    </boundaryEvent> -->
+
+    <!-- 
+    ==========================================================================
+    MULTI-INSTANCE (Mehrfachausführung)
+    ==========================================================================
+    Für Tasks, die für mehrere Elemente ausgeführt werden sollen.
+    - isSequential="false": Parallele Ausführung
+    - isSequential="true": Sequentielle Ausführung
+    -->
+    <!-- <userTask id="task_multi_instance" 
+              name="{{MULTI_TASK_NAME}}" 
+              camunda:candidateUsers="${variables.get('currentPerformer')}" 
+              camunda:priority="50">
+      <multiInstanceLoopCharacteristics
+            isSequential="false"
+            camunda:collection="${variables.get('performers')}"
+            camunda:elementVariable="currentPerformer" />
+    </userTask> -->
+
+    <!-- 
+    ==========================================================================
+    SUB-PROCESS (Event-basiert)
+    ==========================================================================
+    Für Eskalationen und ereignisgesteuerte Unterprozesse.
+    -->
+    <!-- <subProcess id="subprocess_escalation" name="Escalation Handler" triggeredByEvent="true">
+      <startEvent id="sub_start" isInterrupting="false">
+        <escalationEventDefinition escalationRef="escalation_timeout" camunda:escalationCodeVariable="escalationCode" />
+      </startEvent>
+      <userTask id="sub_task" name="Handle Escalation" camunda:candidateUsers="${variables.get('dv_initiator')}" />
+      <endEvent id="sub_end" />
+      <sequenceFlow id="sub_flow_1" sourceRef="sub_start" targetRef="sub_task" />
+      <sequenceFlow id="sub_flow_2" sourceRef="sub_task" targetRef="sub_end" />
+    </subProcess> -->
+
+    <!-- 
+    ==========================================================================
+    END EVENT
+    ==========================================================================
+    Jeder Prozess muss mindestens ein End Event haben.
+    -->
+    <endEvent id="end" />
+
+    <!-- 
+    ==========================================================================
+    SEQUENCE FLOWS (Verbindungen)
+    ==========================================================================
+    Verbinden Sie alle Elemente mit Sequence Flows.
+    Für bedingte Flows (bei Gateways) verwenden Sie conditionExpression.
+    -->
+    <sequenceFlow id="flow_1" sourceRef="start" targetRef="task_example" />
+    <sequenceFlow id="flow_2" sourceRef="task_example" targetRef="end" />
+    
+    <!-- Bedingte Flows (für Gateways): -->
+    <!-- <sequenceFlow id="flow_condition_a" sourceRef="gateway_decision" targetRef="task_a">
+      <conditionExpression xsi:type="tFormalExpression">#{variables.get("amount") > 1000}</conditionExpression>
+    </sequenceFlow>
+    <sequenceFlow id="flow_default" sourceRef="gateway_decision" targetRef="task_b" /> -->
+
+  </process>
+
+  <!-- 
+  ============================================================================
+  ESCALATION DEFINITION (falls verwendet)
+  ============================================================================
+  -->
+  <!-- <escalation id="escalation_timeout" name="Timeout Escalation" escalationCode="TIMEOUT_001" /> -->
+
+  <!-- 
+  ============================================================================
+  DIAGRAM INFORMATIONEN (BPMN-DI)
+  ============================================================================
+  WICHTIG: Passen Sie die Koordinaten entsprechend Ihrer Elemente an!
+  
+  Standard-Dimensionen:
+  - Start/End Event: width="36" height="36"
+  - Tasks: width="100" height="80"
+  - Gateways: width="50" height="50"
+  - Boundary Events: width="36" height="36"
+  
+  Layout-Regeln:
+  - Horizontale Anordnung: Gleiche Y-Koordinate für alle Tasks
+  - Mindestabstand zwischen Elementen: 60px
+  - Task Y-Position: ca. y="77" bis y="102"
+  - Events auf Task-Mittellinie: y = Task.y + (Task.height - Event.height) / 2
+  -->
+  <bpmndi:BPMNDiagram id="BPMNDiagram_1">
+    <bpmndi:BPMNPlane id="BPMNPlane_1" bpmnElement="{{PROCESS_ID}}">
+      
+      <!-- Start Event -->
+      <bpmndi:BPMNShape id="start_di" bpmnElement="start">
+        <dc:Bounds x="179" y="99" width="36" height="36" />
+      </bpmndi:BPMNShape>
+      
+      <!-- User Task -->
+      <bpmndi:BPMNShape id="task_example_di" bpmnElement="task_example">
+        <dc:Bounds x="290" y="77" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      
+      <!-- End Event -->
+      <bpmndi:BPMNShape id="end_di" bpmnElement="end">
+        <dc:Bounds x="462" y="99" width="36" height="36" />
+      </bpmndi:BPMNShape>
+      
+      <!-- Gateway (falls verwendet): -->
+      <!-- <bpmndi:BPMNShape id="gateway_decision_di" bpmnElement="gateway_decision" isMarkerVisible="true">
+        <dc:Bounds x="275" y="192" width="50" height="50" />
+      </bpmndi:BPMNShape> -->
+      
+      <!-- Sub-Process (falls verwendet): -->
+      <!-- <bpmndi:BPMNShape id="subprocess_escalation_di" bpmnElement="subprocess_escalation" isExpanded="true">
+        <dc:Bounds x="165" y="290" width="350" height="200" />
+      </bpmndi:BPMNShape> -->
+      
+      <!-- Sequence Flow: Start -> Task -->
+      <bpmndi:BPMNEdge id="flow_1_di" bpmnElement="flow_1">
+        <di:waypoint x="215" y="117" />
+        <di:waypoint x="290" y="117" />
+      </bpmndi:BPMNEdge>
+      
+      <!-- Sequence Flow: Task -> End -->
+      <bpmndi:BPMNEdge id="flow_2_di" bpmnElement="flow_2">
+        <di:waypoint x="390" y="117" />
+        <di:waypoint x="462" y="117" />
+      </bpmndi:BPMNEdge>
+      
+      <!-- Flows mit Richtungsänderung (Beispiel): -->
+      <!-- <bpmndi:BPMNEdge id="flow_corner_di" bpmnElement="flow_corner">
+        <di:waypoint x="300" y="192" />
+        <di:waypoint x="300" y="120" />
+        <di:waypoint x="410" y="120" />
+      </bpmndi:BPMNEdge> -->
+      
+    </bpmndi:BPMNPlane>
+  </bpmndi:BPMNDiagram>
+</definitions>

@@ -1,0 +1,14 @@
+{
+  "id": "29e9d0d9-6251-42fb-b388-fd09ca26cb19",
+  "name": "Themenformular ausf\u00fcllen und absenden",
+  "author": "00000000-0000-0000-0000-000000000000",
+  "lastEditor": "00000000-0000-0000-0000-000000000000",
+  "creationDate": "2026-10-12T07:28:48.933Z",
+  "lastModificationDate": "2026-10-12T07:28:48.933Z",
+  "definition": "{\"formioFormDefinition\":{\"display\":\"form\",\"components\":[{\"id\":\"ethema1\",\"type\":\"textfield\",\"key\":\"themaOderErfolg\",\"label\":\"Thema oder Erfolg\",\"input\":true,\"tableView\":true,\"validate\":{\"required\":true,\"minLength\":1,\"maxLength\":255}},{\"id\":\"edatum1\",\"type\":\"datetime\",\"key\":\"datumDienstbesprechung\",\"label\":\"Datum der Dienstbesprechung\",\"input\":true,\"tableView\":true,\"format\":\"dd.MM.yyyy\",\"enableDate\":true,\"enableTime\":false,\"datePicker\":{\"minDate\":null,\"maxDate\":null,\"disable\":[],\"disableWeekends\":false,\"disableWeekdays\":false},\"validate\":{\"required\":true}},{\"id\":\"eperson1\",\"type\":\"textfield\",\"key\":\"angemeldetDurch\",\"label\":\"Angemeldet durch\",\"input\":true,\"tableView\":true,\"validate\":{\"required\":true,\"minLength\":1,\"maxLength\":255}},{\"id\":\"eminut1\",\"type\":\"number\",\"key\":\"zeitbedarfMinuten\",\"label\":\"Zeitbedarf in Minuten\",\"input\":true,\"tableView\":true,\"delimiter\":false,\"requireDecimal\":false,\"validate\":{\"required\":true,\"min\":1,\"step\":1,\"custom\":\"valid = Number.isInteger(input) && input >= 1 ? true : 'Bitte geben Sie eine positive ganze Zahl in Minuten ein.';\"}},{\"id\":\"eerlae1\",\"type\":\"textarea\",\"key\":\"erlaeuterung\",\"label\":\"Erl\\u00e4uterung\",\"input\":true,\"tableView\":true,\"rows\":5,\"autoExpand\":false,\"wysiwyg\":false,\"validate\":{\"required\":true,\"minLength\":1}},{\"id\":\"esubmit1\",\"type\":\"button\",\"key\":\"submit\",\"label\":\"Absenden\",\"action\":\"submit\",\"input\":true,\"theme\":\"primary\",\"size\":\"md\",\"block\":false,\"disableOnInvalid\":true}]},\"customCss\":\"\",\"dvfDefVersion\":\"1.0\"}",
+  "_links": {
+    "edit": {"href": "/dforms/ui/forms/29e9d0d9-6251-42fb-b388-fd09ca26cb19/edit"},
+    "self": {"href": "/dforms/api/forms/29e9d0d9-6251-42fb-b388-fd09ca26cb19"},
+    "view": {"href": "/dforms/ui/forms/29e9d0d9-6251-42fb-b388-fd09ca26cb19/view"}
+  }
+}

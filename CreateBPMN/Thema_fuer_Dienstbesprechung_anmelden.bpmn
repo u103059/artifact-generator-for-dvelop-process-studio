@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<definitions xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL"
+             xmlns:camunda="http://camunda.org/schema/1.0/bpmn"
+             xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI"
+             xmlns:dc="http://www.omg.org/spec/DD/20100524/DC"
+             xmlns:di="http://www.omg.org/spec/DD/20100524/DI"
+             targetNamespace=""
+             exporter="d.velop process modeler"
+             exporterVersion="1.0.0">
+  <process id="thema_fuer_dienstbesprechung_anmelden" name="Thema f&#252;r Dienstbesprechung anmelden" isExecutable="true">
+    <documentation>Einfacher, sequenzieller Ablauf zur Themenanmeldung. Die Anmeldung wird nach Abschluss der ersten Aufgabe intern an die zust&#228;ndige Person weitergegeben. Da beide Rollen im selben Prozess arbeiten, werden Sequenzfl&#252;sse statt Nachrichtenfl&#252;ssen zwischen Pools verwendet. Vor der Bereitstellung sind das verkn&#252;pfte Themenformular zu importieren, die Daten&#252;bergabe einzurichten und die zust&#228;ndige Person festzulegen.</documentation>
+    <extensionElements>
+      <camunda:properties>
+        <camunda:property name="variable:zustaendige_person*" value="Identity!" />
+        <camunda:property name="variable:anmeldende_person" value="String" />
+        <camunda:property name="variable:thema_titel" value="String" />
+        <camunda:property name="variable:thema_beschreibung" value="String" />
+        <camunda:property name="variable:dienstbesprechung" value="String" />
+      </camunda:properties>
+    </extensionElements>
+    <laneSet id="lane_set_rollen">
+      <lane id="lane_anmeldende_person" name="Anmeldende Person">
+        <flowNodeRef>start_bedarf_festgestellt</flowNodeRef>
+        <flowNodeRef>task_themenformular_absenden</flowNodeRef>
+      </lane>
+      <lane id="lane_zustaendige_person" name="Zust&#228;ndige Person">
+        <flowNodeRef>task_thema_aufnehmen</flowNodeRef>
+        <flowNodeRef>end_thema_aufgenommen</flowNodeRef>
+      </lane>
+    </laneSet>
+    <startEvent id="start_bedarf_festgestellt" name="Bedarf zur Themenanmeldung festgestellt">
+      <outgoing>flow_start_formular</outgoing>
+    </startEvent>
+    <userTask id="task_themenformular_absenden" name="Themenformular ausf&#252;llen und absenden" camunda:formKey="29e9d0d9-6251-42fb-b388-fd09ca26cb19" camunda:candidateUsers="${variables.get('dv_initiator')}" camunda:priority="50">
+      <documentation>Das verkn&#252;pfte Formular erfasst Thema oder Erfolg (themaOderErfolg), Datum der Dienstbesprechung (datumDienstbesprechung), Angemeldet durch (angemeldetDurch), Zeitbedarf in Minuten (zeitbedarfMinuten) und Erl&#228;uterung (erlaeuterung) als Pflichtfelder. Der Upload einer Pr&#228;sentation (praesentation) ist optional. Bei der Einrichtung der Daten&#252;bergabe sind themaOderErfolg auf thema_titel, datumDienstbesprechung auf dienstbesprechung, angemeldetDurch auf anmeldende_person und erlaeuterung auf thema_beschreibung abzubilden sowie zeitbedarfMinuten und praesentation f&#252;r die Folgeaufgabe bereitzustellen. Das Absenden schlie&#223;t die Aufgabe ab.</documentation>
+      <incoming>flow_start_formular</incoming>
+      <outgoing>flow_formular_tagesordnung</outgoing>
+    </userTask>
+    <userTask id="task_thema_aufnehmen" name="Themenanmeldung entgegennehmen und Thema in Tagesordnung aufnehmen" camunda:candidateUsers="${variables.get('zustaendige_person')}" camunda:priority="50">
+      <documentation>Die zust&#228;ndige Person &#252;bernimmt die Angaben aus der Themenanmeldung in die Tagesordnung der gew&#252;nschten Dienstbesprechung. Die Aufgabe wird nach erfolgter Aufnahme abgeschlossen.</documentation>
+      <incoming>flow_formular_tagesordnung</incoming>
+      <outgoing>flow_tagesordnung_ende</outgoing>
+    </userTask>
+    <endEvent id="end_thema_aufgenommen" name="Thema in die Tagesordnung aufgenommen">
+      <incoming>flow_tagesordnung_ende</incoming>
+    </endEvent>
+    <sequenceFlow id="flow_start_formular" sourceRef="start_bedarf_festgestellt" targetRef="task_themenformular_absenden" />
+    <sequenceFlow id="flow_formular_tagesordnung" sourceRef="task_themenformular_absenden" targetRef="task_thema_aufnehmen" />
+    <sequenceFlow id="flow_tagesordnung_ende" sourceRef="task_thema_aufnehmen" targetRef="end_thema_aufgenommen" />
+  </process>
+  <collaboration id="collaboration_themenanmeldung">
+    <participant id="participant_dienstbesprechung" name="Themenanmeldung zur Dienstbesprechung" processRef="thema_fuer_dienstbesprechung_anmelden" />
+  </collaboration>
+  <bpmndi:BPMNDiagram id="diagram_themenanmeldung">
+    <bpmndi:BPMNPlane id="plane_themenanmeldung" bpmnElement="collaboration_themenanmeldung">
+      <bpmndi:BPMNShape id="participant_dienstbesprechung_di" bpmnElement="participant_dienstbesprechung" isHorizontal="true">
+        <dc:Bounds x="80" y="80" width="840" height="320" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="lane_anmeldende_person_di" bpmnElement="lane_anmeldende_person" isHorizontal="true">
+        <dc:Bounds x="110" y="80" width="810" height="160" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="lane_zustaendige_person_di" bpmnElement="lane_zustaendige_person" isHorizontal="true">
+        <dc:Bounds x="110" y="240" width="810" height="160" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="start_bedarf_festgestellt_di" bpmnElement="start_bedarf_festgestellt">
+        <dc:Bounds x="170" y="132" width="36" height="36" />
+        <bpmndi:BPMNLabel><dc:Bounds x="140" y="175" width="96" height="55" /></bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="task_themenformular_absenden_di" bpmnElement="task_themenformular_absenden">
+        <dc:Bounds x="280" y="110" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="task_thema_aufnehmen_di" bpmnElement="task_thema_aufnehmen">
+        <dc:Bounds x="510" y="280" width="180" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="end_thema_aufgenommen_di" bpmnElement="end_thema_aufgenommen">
+        <dc:Bounds x="770" y="302" width="36" height="36" />
+        <bpmndi:BPMNLabel><dc:Bounds x="738" y="345" width="100" height="50" /></bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="flow_start_formular_di" bpmnElement="flow_start_formular">
+        <di:waypoint x="206" y="150" />
+        <di:waypoint x="280" y="150" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="flow_formular_tagesordnung_di" bpmnElement="flow_formular_tagesordnung">
+        <di:waypoint x="380" y="150" />
+        <di:waypoint x="445" y="150" />
+        <di:waypoint x="445" y="320" />
+        <di:waypoint x="510" y="320" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="flow_tagesordnung_ende_di" bpmnElement="flow_tagesordnung_ende">
+        <di:waypoint x="690" y="320" />
+        <di:waypoint x="770" y="320" />
+      </bpmndi:BPMNEdge>
+    </bpmndi:BPMNPlane>
+  </bpmndi:BPMNDiagram>
+</definitions>
