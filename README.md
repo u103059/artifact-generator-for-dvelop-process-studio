@@ -8,7 +8,7 @@ Dieses Repository unterstützt dabei, fachliche Anforderungen in technische Date
 Das Projekt entwickelt den Ansatz von **GovModeler** weiter. Der ursprüngliche Schwerpunkt liegt auf Verwaltungsprozessen und ihrer standardisierten Beschreibung. Die technische Ausrichtung auf d.velop Process Studio steht nun im Mittelpunkt; der Ansatz ist grundsätzlich auch auf andere organisatorische Anwendungsbereiche übertragbar.
 
 ## Was bedeutet „Artifact“?
-Ein **Artefakt** ist ein konkretes Arbeitsergebnis, das anschließend geprüft, bearbeitet und weiterverwendet werden kann. In diesem Projekt sind damit insbesondere Dateien gemeint: BPMN-Prozessmodelle, JSON-Formulare, DMN-Entscheidungsregeln und perspektivisch Skripte.
+Ein **Artefakt** ist ein konkretes Arbeitsergebnis, das anschließend geprüft, bearbeitet und weiterverwendet werden kann. In diesem Projekt sind damit insbesondere Dateien gemeint: BPMN-Prozessmodelle, JSON-Formulare, DMN-Entscheidungsregeln und Skripte.
 
 Der Begriff bezeichnet das erzeugte Ergebnis, nicht dessen Freigabestatus. Ein erstelltes Artefakt ist deshalb nicht automatisch fachlich korrekt, erfolgreich importiert oder unmittelbar produktiv einsetzbar.
 
@@ -18,7 +18,7 @@ Der Begriff bezeichnet das erzeugte Ergebnis, nicht dessen Freigabestatus. Ein e
 | **Prozessmodelle (BPMN)** | Dokumentierter Agentenworkflow zur Erstellung von Prozessbeschreibungen und BPMN-Dateien auf Basis einer Process-Studio-spezifischen XML-Vorlage. |
 | **Formulare (JSON)** | Dokumentierter Agentenworkflow zur Erstellung von Formularen und ihrer Verknüpfung mit BPMN-Benutzeraufgaben. |
 | **Entscheidungsregeln (DMN)** | Agentenworkflow zur Erstellung von Entscheidungstabellen auf Basis einer aus einem Modeler-Export abgeleiteten DMN-Vorlage. Ungetestete DMN-Funktionen und die BPMN-Einbindung sind in der Zielumgebung gesondert zu prüfen. |
-| **Skripte** | Perspektivischer Erweiterungsbereich, etwa für Datenverarbeitung und Serviceanbindungen; ein entsprechender Erstellungsworkflow ist bislang nicht dokumentiert. |
+| **Skripte (JavaScript)** | Agentenworkflow zur Erstellung von Node.js-Skripten für d.velop scripting auf Basis von `Script.Template.md`. Erzeugt werden `.js`-Dateien zum Einfügen in den Skripteditor; das Exportformat (JSON) wird mangels Referenz nicht erzeugt. |
 
 ## Arbeitsweise
 Die Erstellung erfolgt in **Visual Studio Code mit GitHub Copilot**. Spezialisierte Agenten verarbeiten die Anforderungen und orientieren sich an den hinterlegten Vorlagen und Beispielen. Das Repository stellt dafür Anweisungen und Referenzmaterial bereit, keinen eigenständigen Generator mit garantierter Ausgabevalidierung.
@@ -52,6 +52,13 @@ Die Vorlage kennzeichnet verifizierte und ungetestete Inhalte. Die Einbindung in
 
 Beispielauftrag: „Erstelle eine Entscheidungstabelle ‚Standort zu Prüfer‘: Eingabe `Standort_GR` (String), Ausgabe `Pruefer_GR` (Identity). Intern → Benutzer A, extern → Benutzer B, sonst → Gruppe Prüfer.“
 
+## Skripte erstellen
+Der Agent **Script_ProcessStudio** erstellt Skripte für d.velop scripting (Node.js 22, Cloud) auf Grundlage von `Script.Template.md`. Benötigt werden Skriptname, Zweck, Aufrufkontext sowie Ein- und Ausgaben. Der Agent legt zunächst einen Schnittstellenentwurf zur Bestätigung vor und erzeugt danach die Datei in `CreateScript/`.
+
+Der Code wird in den Skripteditor von Process Studio kopiert; Variablen (z.B. verschlüsselte API-Keys) und externe Bibliotheken werden dort manuell angelegt. Die Einbindung in BPMN wird nur beschrieben. Ungetestete Annahmen, etwa der exakte Funktionsrahmen und das `output`-Format für Prozesse, sind im Template gekennzeichnet.
+
+Beispielauftrag: „Erstelle ein Skript ‚Benachrichtigung senden‘ für einen Prozess: Eingaben `subject`, `message`, `recipient` (Identity), Ausgabe `gesendet` (Boolean). Der API-Key liegt in einer verschlüsselten Variable.“
+
 ## Voraussetzungen
 - **Visual Studio Code**, **GitHub Copilot** und die für die Agentennutzung erforderliche Berechtigung.
 - Zugriff auf die zum jeweiligen Workflow gehörenden Agentenkonfigurationen, Vorlagen und Beispiele.
@@ -66,6 +73,7 @@ Die technische Dokumentation beschreibt die bisherige Entwicklungsumgebung und e
 | CreateBPMN | Erstellte BPMN-Prozessmodelle. |
 | CreateForm | Erstellte Formulardateien im JSON-Format. |
 | CreateDMN | Erstellte DMN-Entscheidungstabellen. |
+| CreateScript | Erstellte Skripte (JavaScript) für d.velop scripting. |
 | example-DMN | DMN-Beispiele aus dem d.velop process modeler als technische Referenz. |
 | BeispielForms | Formularbeispiele als technische Referenz. |
 | example-bpmn-processes | BPMN-Beispiele unter anderem für Gateways, Timer, Mehrfachausführungen und Serviceaufrufe. |
@@ -78,6 +86,6 @@ Generierte Dateien sind **prüfpflichtige Entwürfe**. Vor der Verwendung sind i
 Verwende für Entwicklung und Beispiele möglichst synthetische Daten. Personenbezogene oder vertrauliche Informationen dürfen nur entsprechend den geltenden Datenschutz-, Sicherheits- und Organisationsvorgaben verarbeitet werden. KI-Ausgaben ersetzen keine fachliche oder rechtliche Prüfung.
 
 ## Weiterentwicklung und Beiträge
-Willkommen sind zusätzliche Vorlagen, verbesserte Agentenanweisungen, dokumentierte Fehlerkorrekturen und nachvollziehbare Testergebnisse. Entwicklungsziele sind insbesondere die Erweiterung der DMN-Unterstützung, geeignete Workflows für Skripte sowie eine stärkere automatisierte Validierung der erzeugten Dateien.
+Willkommen sind zusätzliche Vorlagen, verbesserte Agentenanweisungen, dokumentierte Fehlerkorrekturen und nachvollziehbare Testergebnisse. Entwicklungsziele sind insbesondere die Erweiterung der DMN-Unterstützung, die Verifizierung der Skript-Annahmen (inkl. JSON-Exportformat) sowie eine stärkere automatisierte Validierung der erzeugten Dateien.
 
 Bei Kompatibilitätsmeldungen sollten die verwendete Zielversion, erforderliche Konfigurationen und tatsächlich durchgeführte Prüfungen angegeben werden. Das Repository ist ein eigenständiges Projekt zur Unterstützung der Arbeit mit d.velop Process Studio, kein offizielles Produkt von d.velop.
