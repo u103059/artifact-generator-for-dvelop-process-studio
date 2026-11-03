@@ -1,0 +1,28 @@
+{
+  "scriptId": "3b8e5c1a-7d42-4f6b-9a30-c2e81d5f7a94",
+  "releaseId": "",
+  "name": "Frist_berechnen",
+  "author": "",
+  "editor": "",
+  "creationDate": "2026-11-03T09:00:00Z",
+  "changeDate": "2026-11-03T09:00:00Z",
+  "releasedBy": "",
+  "releasedAt": "0001-01-01T00:00:00Z",
+  "automationIds": [],
+  "content": "// Skript: Frist_berechnen - berechnet ein Fälligkeitsdatum in Werktagen (Mo-Fr, ohne Feiertage, UTC)\r\n// Variablen: keine\r\n// Authentifizierung: keine (keine externen Aufrufe)\r\nconst MAX_WERKTAGE = 3650;\r\n\r\nmodule.exports = async (req, res) => {\r\n  try {\r\n    let body;\r\n    try {\r\n      body = req.text() ? JSON.parse(req.text()) : {};\r\n    } catch {\r\n      res.status(400).json({ error: \"Request-Body ist kein gültiges JSON.\" });\r\n      return;\r\n    }\r\n\r\n    const { startDatum, werktage } = body?.input ?? {};\r\n    const tage = parseWerktage(werktage);\r\n    if (tage === null) {\r\n      res.status(400).json({ error: `input.werktage (ganze Zahl von 0 bis ${MAX_WERKTAGE}) ist erforderlich.` });\r\n      return;\r\n    }\r\n\r\n    const start = startDatum ? new Date(startDatum) : new Date();\r\n    if (Number.isNaN(start.getTime())) {\r\n      res.status(400).json({ error: \"input.startDatum ist kein gültiges ISO-8601-Datum.\" });\r\n      return;\r\n    }\r\n\r\n    const frist = new Date(start);\r\n    let rest = tage;\r\n    while (rest > 0) {\r\n      frist.setUTCDate(frist.getUTCDate() + 1);\r\n      const wochentag = frist.getUTCDay();\r\n      if (wochentag !== 0 && wochentag !== 6) rest--;\r\n    }\r\n\r\n    res.status(200).json({ output: { fristDatum: frist.toISOString() } });\r\n  } catch (err) {\r\n    console.error(\"Fristberechnung fehlgeschlagen:\", err.message);\r\n    res.status(500).json({ error: \"Interner Fehler bei der Fristberechnung.\" });\r\n  }\r\n};\r\n\r\nfunction parseWerktage(value) {\r\n  const isNumeric = typeof value === \"number\" || (typeof value === \"string\" && value.trim() !== \"\");\r\n  const n = isNumeric ? Number(value) : NaN;\r\n  return Number.isInteger(n) && n >= 0 && n <= MAX_WERKTAGE ? n : null;\r\n}\r\n",
+  "dependencies": null,
+  "customerVariables": [],
+  "action": {
+    "caller_type": null,
+    "description": { "de": "" },
+    "display_name": { "de": "" },
+    "endpoint": "/scripting/script/3b8e5c1a-7d42-4f6b-9a30-c2e81d5f7a94/version/a91c47e2-5b3d-4e08-8f16-0d7b2c6e9a53/run",
+    "execution_mode": "Synchron",
+    "id": "3b8e5c1a-7d42-4f6b-9a30-c2e81d5f7a94-a91c47e2-5b3d-4e08-8f16-0d7b2c6e9a53",
+    "input_properties": null,
+    "output_properties": null,
+    "tags": null,
+    "volatile": true
+  },
+  "actionEnabled": false
+}
