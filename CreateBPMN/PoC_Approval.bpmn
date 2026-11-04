@@ -4,7 +4,7 @@
     <startEvent id="start" name="Genehmigungsantrag eingegangen" />
     <sequenceFlow id="flow_1" sourceRef="start" targetRef="task_genehmigung" />
 
-    <userTask id="task_genehmigung" name="Genehmigung" camunda:candidateUsers="${variables.get('dv_initiator')}" camunda:priority="50" />
+    <userTask id="task_genehmigung" name="Genehmigung" camunda:formKey="d64ac7a2-7f6d-4c8b-9a31-4d2a6e8f91b3" camunda:candidateUsers="${variables.get('dv_initiator')}" camunda:priority="50" />
     <sequenceFlow id="flow_2" sourceRef="task_genehmigung" targetRef="end" />
 
     <endEvent id="end" name="Genehmigung abgeschlossen" />

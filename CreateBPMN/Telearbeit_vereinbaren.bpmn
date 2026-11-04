@@ -1,0 +1,155 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<definitions xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:camunda="http://camunda.org/schema/1.0/bpmn" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" targetNamespace="" exporter="d.velop process modeler" exporterVersion="1.0.0">
+  <process id="telearbeit_vereinbaren_process" name="Telearbeit vereinbaren" isExecutable="true">
+    <extensionElements>
+      <camunda:properties>
+        <camunda:property name="variable:fuehrungskraft*" value="Identity!" />
+        <camunda:property name="variable:personalstelle*" value="Identity!" />
+      </camunda:properties>
+    </extensionElements>
+    <startEvent id="start" name="Telearbeit beantragt" />
+    <userTask id="task_einzelvereinbarung_erfassen" name="Einzelvereinbarung erfassen" camunda:formKey="d64ac7a2-7f6d-4c8b-9a31-4d2a6e8f91b3" camunda:candidateUsers="${variables.get('dv_initiator')}" camunda:priority="50" />
+    <userTask id="task_fuehrungskraft_pruefen" name="Einzelvereinbarung durch Führungskraft prüfen" camunda:candidateUsers="${variables.get('fuehrungskraft')}" camunda:priority="50" />
+    <exclusiveGateway id="gateway_fuehrungskraft_genehmigt" name="Von Führungskraft genehmigt?" default="s6" />
+    <userTask id="task_personalstelle_pruefen" name="Einzelvereinbarung durch Personalstelle prüfen" camunda:candidateUsers="${variables.get('personalstelle')}" camunda:priority="50" />
+    <exclusiveGateway id="gateway_personalstelle_genehmigt" name="Von Personalstelle genehmigt?" default="s10" />
+    <userTask id="task_ablehnung_zur_kenntnis_nehmen" name="Ablehnung zur Kenntnis nehmen" camunda:candidateUsers="${variables.get('dv_initiator')}" camunda:priority="50" />
+    <endEvent id="end_genehmigt" name="Telearbeit genehmigt" />
+    <endEvent id="end_abgelehnt" name="Antrag abgelehnt" />
+    <sequenceFlow id="s1" sourceRef="start" targetRef="task_einzelvereinbarung_erfassen" />
+    <sequenceFlow id="s2" sourceRef="task_einzelvereinbarung_erfassen" targetRef="task_fuehrungskraft_pruefen" />
+    <sequenceFlow id="s3" sourceRef="task_fuehrungskraft_pruefen" targetRef="gateway_fuehrungskraft_genehmigt" />
+    <sequenceFlow id="s4" name="genehmigt" sourceRef="gateway_fuehrungskraft_genehmigt" targetRef="task_personalstelle_pruefen">
+      <conditionExpression xsi:type="tFormalExpression">#{variables.get("dv_decision") == "yes"}</conditionExpression>
+    </sequenceFlow>
+    <sequenceFlow id="s5" name="überarbeiten" sourceRef="gateway_fuehrungskraft_genehmigt" targetRef="task_einzelvereinbarung_erfassen">
+      <conditionExpression xsi:type="tFormalExpression">#{variables.get("dv_decision") == "revise"}</conditionExpression>
+    </sequenceFlow>
+    <sequenceFlow id="s6" name="abgelehnt" sourceRef="gateway_fuehrungskraft_genehmigt" targetRef="task_ablehnung_zur_kenntnis_nehmen" />
+    <sequenceFlow id="s7" sourceRef="task_personalstelle_pruefen" targetRef="gateway_personalstelle_genehmigt" />
+    <sequenceFlow id="s8" name="genehmigt" sourceRef="gateway_personalstelle_genehmigt" targetRef="end_genehmigt">
+      <conditionExpression xsi:type="tFormalExpression">#{variables.get("dv_decision") == "yes"}</conditionExpression>
+    </sequenceFlow>
+    <sequenceFlow id="s9" name="überarbeiten" sourceRef="gateway_personalstelle_genehmigt" targetRef="task_einzelvereinbarung_erfassen">
+      <conditionExpression xsi:type="tFormalExpression">#{variables.get("dv_decision") == "revise"}</conditionExpression>
+    </sequenceFlow>
+    <sequenceFlow id="s10" name="abgelehnt" sourceRef="gateway_personalstelle_genehmigt" targetRef="task_ablehnung_zur_kenntnis_nehmen" />
+    <sequenceFlow id="s11" sourceRef="task_ablehnung_zur_kenntnis_nehmen" targetRef="end_abgelehnt" />
+  </process>
+
+  <!-- Diagram information -->
+  <bpmndi:BPMNDiagram id="BPMNDiagram_1">
+    <bpmndi:BPMNPlane id="BPMNPlane_1" bpmnElement="telearbeit_vereinbaren_process">
+      <bpmndi:BPMNShape id="start_di" bpmnElement="start">
+        <dc:Bounds x="173" y="102" width="36" height="36" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="153" y="145" width="76" height="27" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="task_einzelvereinbarung_erfassen_di" bpmnElement="task_einzelvereinbarung_erfassen">
+        <dc:Bounds x="259" y="80" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="task_fuehrungskraft_pruefen_di" bpmnElement="task_fuehrungskraft_pruefen">
+        <dc:Bounds x="409" y="80" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="gateway_fuehrungskraft_genehmigt_di" bpmnElement="gateway_fuehrungskraft_genehmigt" isMarkerVisible="true">
+        <dc:Bounds x="559" y="95" width="50" height="50" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="514" y="150" width="64" height="54" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="task_personalstelle_pruefen_di" bpmnElement="task_personalstelle_pruefen">
+        <dc:Bounds x="659" y="80" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="gateway_personalstelle_genehmigt_di" bpmnElement="gateway_personalstelle_genehmigt" isMarkerVisible="true">
+        <dc:Bounds x="809" y="95" width="50" height="50" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="766" y="150" width="64" height="54" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="end_genehmigt_di" bpmnElement="end_genehmigt">
+        <dc:Bounds x="909" y="102" width="36" height="36" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="889" y="145" width="76" height="27" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="task_ablehnung_zur_kenntnis_nehmen_di" bpmnElement="task_ablehnung_zur_kenntnis_nehmen">
+        <dc:Bounds x="659" y="220" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="end_abgelehnt_di" bpmnElement="end_abgelehnt">
+        <dc:Bounds x="691" y="342" width="36" height="36" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="671" y="385" width="76" height="27" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="s1_di" bpmnElement="s1">
+        <di:waypoint x="209" y="120" />
+        <di:waypoint x="259" y="120" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="s2_di" bpmnElement="s2">
+        <di:waypoint x="359" y="120" />
+        <di:waypoint x="409" y="120" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="s3_di" bpmnElement="s3">
+        <di:waypoint x="509" y="120" />
+        <di:waypoint x="559" y="120" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="s4_di" bpmnElement="s4">
+        <di:waypoint x="609" y="120" />
+        <di:waypoint x="659" y="120" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="611" y="100" width="48" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="s5_di" bpmnElement="s5">
+        <di:waypoint x="584" y="95" />
+        <di:waypoint x="584" y="40" />
+        <di:waypoint x="329" y="40" />
+        <di:waypoint x="329" y="80" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="430" y="43" width="70" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="s6_di" bpmnElement="s6">
+        <di:waypoint x="584" y="145" />
+        <di:waypoint x="584" y="260" />
+        <di:waypoint x="659" y="260" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="598" y="242" width="50" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="s7_di" bpmnElement="s7">
+        <di:waypoint x="759" y="120" />
+        <di:waypoint x="809" y="120" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="s8_di" bpmnElement="s8">
+        <di:waypoint x="859" y="120" />
+        <di:waypoint x="909" y="120" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="861" y="100" width="48" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="s9_di" bpmnElement="s9">
+        <di:waypoint x="834" y="95" />
+        <di:waypoint x="834" y="20" />
+        <di:waypoint x="289" y="20" />
+        <di:waypoint x="289" y="80" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="500" y="3" width="70" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="s10_di" bpmnElement="s10">
+        <di:waypoint x="834" y="145" />
+        <di:waypoint x="834" y="260" />
+        <di:waypoint x="759" y="260" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="766" y="242" width="50" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="s11_di" bpmnElement="s11">
+        <di:waypoint x="709" y="300" />
+        <di:waypoint x="709" y="342" />
+      </bpmndi:BPMNEdge>
+    </bpmndi:BPMNPlane>
+  </bpmndi:BPMNDiagram>
+</definitions>
