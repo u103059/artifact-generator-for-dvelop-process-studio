@@ -18,7 +18,7 @@ Der Begriff bezeichnet das erzeugte Ergebnis, nicht dessen Freigabestatus. Ein e
 | **Prozessmodelle (BPMN)** | Dokumentierter Agentenworkflow zur Erstellung von Prozessbeschreibungen und BPMN-Dateien auf Basis einer Process-Studio-spezifischen XML-Vorlage. |
 | **Formulare (JSON)** | Dokumentierter Agentenworkflow zur Erstellung von Formularen und ihrer Verknüpfung mit BPMN-Benutzeraufgaben. |
 | **Entscheidungsregeln (DMN)** | Agentenworkflow zur Erstellung von Entscheidungstabellen auf Basis einer aus einem Modeler-Export abgeleiteten DMN-Vorlage. Ungetestete DMN-Funktionen und die BPMN-Einbindung sind in der Zielumgebung gesondert zu prüfen. |
-| **Skripte (JSON)** | Agentenworkflow zur Erstellung von Node.js-Skripten für d.velop scripting auf Basis von `Script.Template.md`. Erzeugt werden importierbare Skript-Exportdateien (`.json`) nach dem Format des Export-Beispiels in `example-script/`; der Import ist in der Zielumgebung zu prüfen. |
+| **Skripte (JSON)** | Der Agent erstellt Skripte für d.velop und nutzt dafür eine Vorlage. Die Skripte werden als JSON-Dateien gespeichert. Ob sie sich in der Zielumgebung verwenden lassen, muss dort geprüft werden. |
 
 ## Arbeitsweise
 Die Erstellung erfolgt in **Visual Studio Code mit GitHub Copilot**. Spezialisierte Agenten verarbeiten die Anforderungen und orientieren sich an den hinterlegten Vorlagen und Beispielen. Das Repository stellt dafür Anweisungen und Referenzmaterial bereit, keinen eigenständigen Generator mit garantierter Ausgabevalidierung.
