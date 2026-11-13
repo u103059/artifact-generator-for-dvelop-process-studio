@@ -46,7 +46,7 @@ Der Workflow umfasst die Erstellung einer Formular-ID und deren Eintragung als `
 Beispielauftrag: „Erstelle ein Formular für die Aufgabe ‚Antrag prüfen‘ im vorhandenen BPMN-Modell. Benötigt werden eine schreibgeschützte Antragsnummer, eine verpflichtende Entscheidung und ein Kommentarfeld. Verknüpfe das Formular mit der Benutzeraufgabe.“
 
 ## Entscheidungstabellen erstellen
-Der Agent **DMN_ProcessStudio** erstellt DMN-Entscheidungstabellen auf Grundlage von `DMN.Template.md`. Benötigt werden Tabellenname, Eingabe- und Ausgabevariablen mit Typ (`String`, `Number`, `Boolean`, `Identity`) sowie die Regeln. Der Agent legt zunächst einen Tabellenentwurf zur Bestätigung vor und erzeugt danach die Datei in `CreateDMN/`.
+Der Agent **DMN_ProcessStudio** erstellt DMN-Entscheidungstabellen auf Grundlage von `DMN.Template.md`. Benötigt werden Tabellenname, Eingabe- und Ausgabevariablen mit Typ (`String`, `Number`, `Boolean`, `Identity`) sowie die Regeln. Der Agent legt zunächst einen Tabellenentwurf zur Bestätigung vor und erzeugt danach die Datei in `CreateDMN/`. Zur Sammlung der Angaben dient das Erfassungstemplate `DMN.Erfassung.md` (eine Eingabe, eine Ausgabe, Hit Policy UNIQUE).
 
 Die Vorlage kennzeichnet verifizierte und ungetestete Inhalte. Die Einbindung in BPMN erfolgt nur, wenn eine exportierte Referenz-BPMN mit Geschäftsregelaktivität in `example-DMN/` vorliegt.
 
