@@ -47,12 +47,20 @@ Der Workflow konzentriert sich auf einen schlanken Ablauf. **Alternativpfade, Ga
 
 Beispielauftrag: „Beschreibe den Prozess ‚Stammdaten ändern‘. Erstelle nach meiner Bestätigung eine BPMN-Datei für d.velop Process Studio anhand der hinterlegten Vorlage. Bei unvollständigen Angaben soll eine Rückfrage erfolgen.“
 
+Beispielergebnis: Der Prozess „Telearbeit vereinbaren“ ([Telearbeit_vereinbaren.bpmn](CreateBPMN/Telearbeit_vereinbaren.bpmn)) mit Benutzeraufgaben, zwei Genehmigungs-Gateways und Rückläufen zur Überarbeitung, dargestellt im BPMN-Modeler:
+
+![BPMN-Modell „Telearbeit vereinbaren“ mit Erfassung, Prüfung durch Führungskraft und Personalstelle, Genehmigung und Ablehnung](examples/example-bpmn-processes/Screenshot%202026-11-13%20112224.png)
+
 ## Formulare erstellen und verknüpfen
 Der Agent **Form_ProcessStudio** erstellt JSON-Formulare auf Grundlage der Formularvorlage. Benötigt werden insbesondere Formularname, Zweck, Felder sowie die zugehörige BPMN-Datei und Benutzeraufgabe. Ergänzend können Validierungsregeln, bedingte Anzeigen, Berechnungen und Layoutwünsche angegeben werden.
 
 Der Workflow umfasst die Erstellung einer Formular-ID und deren Eintragung als `camunda:formKey` an der zugehörigen Benutzeraufgabe. Die Formularstruktur basiert auf Form.io und dem im Projekt dokumentierten d.velop-spezifischen JSON-Rahmen. Die tatsächliche Verfügbarkeit des Formulars im Zielsystem muss anschließend sichergestellt werden.
 
 Beispielauftrag: „Erstelle ein Formular für die Aufgabe ‚Antrag prüfen‘ im vorhandenen BPMN-Modell. Benötigt werden eine schreibgeschützte Antragsnummer, eine verpflichtende Entscheidung und ein Kommentarfeld. Verknüpfe das Formular mit der Benutzeraufgabe.“
+
+Beispielergebnis: Das Formular „Anmeldung an weiterführender Schule“ ([Schule_anmelden_Antrag.json](CreateForm/Schule_anmelden_Antrag.json)) mit gruppierten Abschnitten, Pflichtfeldern, Auswahlfeld, Einwilligungen und Absenden-Schaltfläche, dargestellt in d.velop Process Studio:
+
+![Formular „Anmeldung an weiterführender Schule“ mit Abschnitten zu Kind, Sorgeberechtigten, gewünschter Schule, Nachweisen und Datenschutz](examples/example-forms/Screenshot%202026-11-13%20112725.png)
 
 ## Entscheidungstabellen erstellen
 Der Agent **DMN_ProcessStudio** erstellt DMN-Entscheidungstabellen auf Grundlage von `Templates/DMN.Template.md`. Benötigt werden Tabellenname, Eingabe- und Ausgabevariablen mit Typ (`String`, `Number`, `Boolean`, `Identity`) sowie die Regeln. Der Agent legt zunächst einen Tabellenentwurf zur Bestätigung vor und erzeugt danach die Datei in `CreateDMN/`.
