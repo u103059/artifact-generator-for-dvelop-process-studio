@@ -1,7 +1,7 @@
 # d.velop Process Studio - DMN Template
 
 ## Übersicht
-Dieses Template beschreibt Struktur und Konventionen für Entscheidungstabellen (DMN) in d.velop Process Studio. Grundlage ist der Export des d.velop process modeler ([example-DMN/Standort zu Prüfer_draft.dmn](example-DMN/Standort%20zu%20Pr%C3%BCfer_draft.dmn)).
+Dieses Template beschreibt Struktur und Konventionen für Entscheidungstabellen (DMN) in d.velop Process Studio. Grundlage ist der Export des d.velop process modeler ([examples/example-DMN/Standort zu Prüfer_draft.dmn](../examples/example-DMN/Standort%20zu%20Pr%C3%BCfer_draft.dmn)).
 
 Das öffentliche Administrationshandbuch (Version 2023.Q4) dokumentiert DMN nicht. Inhalte sind daher gekennzeichnet:
 
@@ -232,7 +232,7 @@ Hinweis: Bei `UNIQUE` muss die Auffangregel (leere Bedingung) alle übrigen Fäl
 ---
 
 ## Einbindung in BPMN
-**Status: ausstehend.** Eine Referenz-BPMN mit Geschäftsregelaktivität (Export aus dem d.velop process modeler) wird in `example-DMN/` abgelegt. Bis dahin gilt:
+**Status: ausstehend.** Eine Referenz-BPMN mit Geschäftsregelaktivität (Export aus dem d.velop process modeler) wird in `examples/example-DMN/` abgelegt. Bis dahin gilt:
 
 - Die Einbindung ist **nicht** im Handbuch 2023.Q4 dokumentiert; `businessRuleTask` und `camunda:decisionRef` fehlen dort in der Liste der erlaubten Elemente/Erweiterungen.
 - Liegt eine Referenz-BPMN vor, sind deren Elementtyp, Attribute und Layout exakt zu übernehmen.

@@ -10,7 +10,7 @@ Du bist Spezialist für **d.velop forms** in d.velop process studio. Deine Aufga
 - DO NOT bestehende Dateien mit `create_file` überschreiben; `create_file` nur für **neue** Formular-JSONs.
 - DO NOT BPMN-Dateien per Terminal/PowerShell ändern – ausschließlich mit Edit-Werkzeugen (`replace_string_in_file`, `multi_replace_string_in_file`, `apply_patch`). Terminal nur zur Validierung (z.B. JSON/XML-Parsing).
 - DO NOT BPMN-Struktur (Tasks, Flows, Diagramm) verändern – nur das Attribut `camunda:formKey` setzen bzw. aktualisieren.
-- DO NOT `Form.Template.md` oder Beispielformulare verändern.
+- DO NOT `Templates/Form.Template.md` oder Beispielformulare verändern.
 - ONLY Formulare in `CreateForm/` erstellen und deren Verknüpfung in `CreateBPMN/*.bpmn` herstellen.
 
 ## Eingaben
@@ -21,8 +21,8 @@ Fehlt die BPMN-Referenz, suche passende Dateien in `CreateBPMN/` und lass den Nu
 ## Workflow
 
 ### 1. Referenzen lesen (Pflicht)
-- `Form.Template.md` vollständig lesen (Grundstruktur, 16 Komponenten-Typen, Validierung, Layout, Conditional, Namenskonventionen, häufige Fehler).
-- Bei Bedarf Beispiele aus `example-forms/` und bestehende Formulare aus `CreateForm/` heranziehen.
+- `Templates/Form.Template.md` vollständig lesen (Grundstruktur, 16 Komponenten-Typen, Validierung, Layout, Conditional, Namenskonventionen, häufige Fehler).
+- Bei Bedarf Beispiele aus `examples/example-forms/` und bestehende Formulare aus `CreateForm/` heranziehen.
 - Bei Unklarheiten zu Process-Studio-Funktionen das Administrationshandbuch konsultieren: https://help.d-velop.de/docs/de/pub/process-studio-admin/2023.q4
 
 ### 2. BPMN-Kontext ermitteln
@@ -54,7 +54,7 @@ Fehlt die BPMN-Referenz, suche passende Dateien in `CreateBPMN/` und lass den Nu
 
 ### 7. Formular-Datei erstellen
 - UUID (v4) als Formular-ID generieren.
-- Datei `CreateForm/<Formularname_mit_Unterstrichen>.json` (Umlaute als ae/oe/ue/ss) nach Grundstruktur aus `Form.Template.md`: äußeres Objekt mit `id`, `name`, `author`, `lastEditor`, `creationDate`, `lastModificationDate`, `_links` und `definition` als **JSON-String** mit `formioFormDefinition` und `"dvfDefVersion": "1.0"`.
+- Datei `CreateForm/<Formularname_mit_Unterstrichen>.json` (Umlaute als ae/oe/ue/ss) nach Grundstruktur aus `Templates/Form.Template.md`: äußeres Objekt mit `id`, `name`, `author`, `lastEditor`, `creationDate`, `lastModificationDate`, `_links` und `definition` als **JSON-String** mit `formioFormDefinition` und `"dvfDefVersion": "1.0"`.
 
 ### 8. BPMN-Verknüpfung (Pflicht)
 - `camunda:formKey="<Form-UUID>"` an der User Task setzen – direkt nach `name`, vor `camunda:candidateUsers`.

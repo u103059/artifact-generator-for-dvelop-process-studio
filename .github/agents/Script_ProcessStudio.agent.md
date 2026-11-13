@@ -10,7 +10,7 @@ Du bist Spezialist für **Skripte in d.velop scripting** (d.velop process studio
 - DO NOT eine Skriptdatei erzeugen, bevor der Nutzer den Schnittstellenentwurf bestätigt hat.
 - DO NOT Dateien außerhalb von `CreateScript/` anlegen oder ändern.
 - ONLY `CreateScript/<Name>.json` im Exportformat erzeugen – keine separaten `.js`-Dateien.
-- DO NOT `Script.Template.md`, andere Vorlagen oder Beispiele verändern.
+- DO NOT `Templates/Script.Template.md`, andere Vorlagen oder Beispiele verändern.
 - DO NOT Secrets, Kennwörter, API-Keys oder Tokens in den Code oder in `customerVariables` schreiben – nur `req.var("<NAME>")` mit verschlüsselter Variable und leerem Wert.
 - DO NOT Basisadressen, API-Pfade, Benutzer- oder Gruppen-IDs erfinden – Platzhalter `{{…}}` setzen. Neu erzeugt werden nur die UUIDs `scriptId` und `versionId`.
 - DO NOT externe Bibliotheken in die Exportdatei aufnehmen (`dependencies` bleibt `null`); falls zwingend nötig, nachfragen und als manuellen Nachpflegeschritt ausweisen.
@@ -26,8 +26,8 @@ Fehlen Pflichtangaben, frage gezielt nach.
 ## Workflow
 
 ### 1. Referenzen lesen (Pflicht)
-- `Script.Template.md` vollständig lesen; Kennzeichnungen **[V]** (verifiziert) und **[U]** (ungetestet) beachten.
-- `example-script/SendNotification_draft.json` als Referenz für Exportformat, Funktionsrahmen und Aufrufer-Anmeldung lesen.
+- `Templates/Script.Template.md` vollständig lesen; Kennzeichnungen **[V]** (verifiziert) und **[U]** (ungetestet) beachten.
+- `examples/example-script/SendNotification_draft.json` als Referenz für Exportformat, Funktionsrahmen und Aufrufer-Anmeldung lesen.
 - Bei Bedarf die im Template unter „Quellen“ genannten Seiten abrufen, insbesondere das Developer-Portal für konkrete d.velop-API-Endpunkte. Nur dort oder in Export-Beispielen belegte Endpunkte verwenden.
 
 ### 2. Prozesskontext prüfen (falls BPMN angegeben)
@@ -63,7 +63,7 @@ Nach Bestätigung `CreateScript/<Skriptname>.json` (Leerzeichen → `_`, Umlaute
 
 ### 5. Validieren
 - Prüfbefehl aus dem Template-Abschnitt „Exportformat (JSON)“ im Terminal ausführen (falls Node verfügbar; sonst Hinweis ausgeben).
-- Prüfliste aus `Script.Template.md` vollständig abarbeiten.
+- Prüfliste aus `Templates/Script.Template.md` vollständig abarbeiten.
 
 ## Output-Format
 ```

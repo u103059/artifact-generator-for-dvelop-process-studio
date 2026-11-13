@@ -1,7 +1,7 @@
 # d.velop Process Studio – Skript-Template (d.velop scripting)
 
 ## Übersicht
-Dieses Template beschreibt Struktur und Konventionen für Skripte in d.velop scripting (Bestandteil von d.velop process studio). Grundlage sind das Administrationshandbuch **2025.Q1**, Kapitel „Verwenden von Skripten“, die d.velop-Hilfeartikel, das Developer-Portal (siehe [Quellen](#quellen)) sowie das Export-Beispiel `example-script/SendNotification_draft.json`.
+Dieses Template beschreibt Struktur und Konventionen für Skripte in d.velop scripting (Bestandteil von d.velop process studio). Grundlage sind das Administrationshandbuch **2025.Q1**, Kapitel „Verwenden von Skripten“, die d.velop-Hilfeartikel, das Developer-Portal (siehe [Quellen](#quellen)) sowie das Export-Beispiel `examples/example-script/SendNotification_draft.json`.
 
 Erzeugt werden **Skript-Exportdateien (`.json`)**, die über die Importschaltfläche der Skriptverwaltung eingelesen werden. Der JavaScript-Code steht im Feld `content` (siehe [Exportformat (JSON)](#exportformat-json)). Das Template gilt **nur für die Cloud**.
 
@@ -180,7 +180,7 @@ function userIdFromIdentity(uri) {
 
 - **[U]** Gruppen kommen als `identity:///identityprovider/scim/groups/<id>` und werden von `userIdFromIdentity` abgelehnt; bei Bedarf gesondert behandeln.
 - **[V]** Das Export-Beispiel gibt keinen `output` zurück; für Service-Aufgaben ohne Rückgabewerte ist das ausreichend.
-- Die Einbindung in BPMN (Service-Aufgabe, Skript-URL, Ein-/Ausgabezuordnung) erfolgt im d.velop process modeler und wird hier nur beschrieben, nicht generiert. Muster für Service-Aufrufe: `BPMN_Template.xml` (Abschnitt SERVICE TASK) und `example-bpmn-processes/Sync Service`.
+- Die Einbindung in BPMN (Service-Aufgabe, Skript-URL, Ein-/Ausgabezuordnung) erfolgt im d.velop process modeler und wird hier nur beschrieben, nicht generiert. Muster für Service-Aufrufe: `BPMN_Template.xml` (Abschnitt SERVICE TASK) und `examples/example-bpmn-processes/Sync Service`.
 
 ---
 
@@ -284,7 +284,7 @@ function parseCookies(req) {
 ---
 
 ## Exportformat (JSON)
-**[V]** Felder laut `example-script/SendNotification_draft.json`. Die Erzeugungsregeln gelten für neue Skripte im Entwurfsstatus.
+**[V]** Felder laut `examples/example-script/SendNotification_draft.json`. Die Erzeugungsregeln gelten für neue Skripte im Entwurfsstatus.
 
 | Feld | Typ | Erzeugungsregel |
 |---|---|---|
@@ -353,7 +353,7 @@ Grundgerüst:
 Prüfung (JSON gültig, Felder wie im Beispiel, Code kompilierbar ohne Ausführung):
 
 ```powershell
-node -e "const a=require('./example-script/SendNotification_draft.json'),s=require('./CreateScript/<Datei>.json');const k=o=>Object.keys(o).sort().join();if(k(a)!==k(s)||k(a.action)!==k(s.action))throw new Error('Feldabweichung');new (require('vm').Script)(s.content);console.log('ok')"
+node -e "const a=require('./examples/example-script/SendNotification_draft.json'),s=require('./CreateScript/<Datei>.json');const k=o=>Object.keys(o).sort().join();if(k(a)!==k(s)||k(a.action)!==k(s.action))throw new Error('Feldabweichung');new (require('vm').Script)(s.content);console.log('ok')"
 ```
 
 ---
@@ -374,7 +374,7 @@ node -e "const a=require('./example-script/SendNotification_draft.json'),s=requi
 ---
 
 ## Vollständiges Beispiel
-Benachrichtigung an einen Benutzer senden – überarbeitete Fassung von `example-script/SendNotification_draft.json` (Aufrufer-Anmeldung, Eingabeprüfung, HTML-Escaping, explizite Statuscodes, ohne On-Prem-Fallback).
+Benachrichtigung an einen Benutzer senden – überarbeitete Fassung von `examples/example-script/SendNotification_draft.json` (Aufrufer-Anmeldung, Eingabeprüfung, HTML-Escaping, explizite Statuscodes, ohne On-Prem-Fallback).
 
 Code (Inhalt von `content`):
 
@@ -526,4 +526,4 @@ Stand der Recherche: 11/2026.
 - Developer-Portal, d.velop scripting (OpenAPI): https://help.d-velop.de/dev/documentation/dvelop-scripting
 - API-Übersicht: https://help.d-velop.de/dev/documentation
 - Node.js-Version: https://help.d-velop.de/dev/news/dvelop-process-studio-nodejs-version
-- Export-Beispiel aus Process Studio: `example-script/SendNotification_draft.json` (Exportformat, Funktionsrahmen, Aufrufer-Anmeldung, Benachrichtigungs-API)
+- Export-Beispiel aus Process Studio: `examples/example-script/SendNotification_draft.json` (Exportformat, Funktionsrahmen, Aufrufer-Anmeldung, Benachrichtigungs-API)

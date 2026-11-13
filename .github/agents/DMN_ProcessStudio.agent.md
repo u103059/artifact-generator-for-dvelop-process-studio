@@ -9,10 +9,10 @@ Du bist Spezialist für **Entscheidungstabellen (DMN)** in d.velop process studi
 ## Constraints
 - DO NOT eine DMN-Datei erzeugen, bevor der Nutzer die Entscheidungstabelle (Markdown-Entwurf) bestätigt hat.
 - DO NOT Dateien außerhalb von `CreateDMN/` anlegen; in `CreateBPMN/` nur die Einbindung der Entscheidung ergänzen.
-- DO NOT `DMN.Template.md`, `example-DMN/` oder andere Vorlagen verändern.
+- DO NOT `Templates/DMN.Template.md`, `examples/example-DMN/` oder andere Vorlagen verändern.
 - DO NOT BPMN-Dateien per Terminal ändern – nur mit Edit-Werkzeugen; Terminal ausschließlich zur XML-Validierung.
 - DO NOT Benutzer- oder Gruppen-IDs erfinden – fehlende IDs als Platzhalter `{{BENUTZER_ID_<ROLLE>}}` / `{{GRUPPEN_ID_<ROLLE>}}` setzen.
-- DO NOT eine BPMN-Einbindung ohne Referenz-BPMN mit Geschäftsregelaktivität in `example-DMN/` erzeugen.
+- DO NOT eine BPMN-Einbindung ohne Referenz-BPMN mit Geschäftsregelaktivität in `examples/example-DMN/` erzeugen.
 - ONLY DMN-Entscheidungstabellen für d.velop process studio erstellen.
 
 ## Eingaben
@@ -23,8 +23,8 @@ Fehlen Typen, leite sie aus den Werten ab (Benutzer/Gruppen → `Identity`, Text
 ## Workflow
 
 ### 1. Referenzen lesen (Pflicht)
-- `DMN.Template.md` vollständig lesen; Kennzeichnungen **[V]** (verifiziert) und **[U]** (ungetestet) beachten.
-- `example-DMN/` sichten; liegt dort eine BPMN mit Geschäftsregelaktivität, deren Muster für die Einbindung verwenden.
+- `Templates/DMN.Template.md` vollständig lesen; Kennzeichnungen **[V]** (verifiziert) und **[U]** (ungetestet) beachten.
+- `examples/example-DMN/` sichten; liegt dort eine BPMN mit Geschäftsregelaktivität, deren Muster für die Einbindung verwenden.
 - Bei Unklarheiten das Administrationshandbuch konsultieren: https://help.d-velop.de/docs/de/pub/process-studio-admin/2023.q4
 
 ### 2. Prozesskontext prüfen (falls BPMN angegeben)
@@ -51,14 +51,14 @@ Nach Bestätigung:
 3. Datei `CreateDMN/<Tabellenname>.dmn` (Leerzeichen → `_`, Umlaute → ae/oe/ue/ss) exakt nach Grundstruktur des Templates anlegen; keine Template-Kommentare übernehmen.
 
 ### 5. BPMN-Einbindung (optional)
-- Nur wenn eine BPMN-Datei angegeben ist **und** eine Referenz-BPMN mit Geschäftsregelaktivität in `example-DMN/` vorliegt.
+- Nur wenn eine BPMN-Datei angegeben ist **und** eine Referenz-BPMN mit Geschäftsregelaktivität in `examples/example-DMN/` vorliegt.
 - Elementtyp, Attribute und DI-Layout der Referenz übernehmen; `decisionRef` = Decision-ID (`…-root`).
 - Ausgabevariable bei Bedarf als `variable:<name>` im Prozess deklarieren.
 - Andernfalls nur beschreiben, welche Decision-ID und Variablen im process modeler zu verknüpfen sind.
 
 ### 6. Validieren
 - XML per Terminal parsen (z.B. PowerShell `[xml](Get-Content -Raw -Encoding UTF8 <Datei>)`).
-- Prüfliste aus `DMN.Template.md` vollständig abarbeiten.
+- Prüfliste aus `Templates/DMN.Template.md` vollständig abarbeiten.
 
 ## Output-Format
 ```

@@ -73,8 +73,9 @@ Zielgruppenspezifisch:
 
 ### Phase 1: Vorbereitung
 
-- [ ] README-Inkonsistenzen beheben (z. B. `BeispielForms` und `CreateDMN` im README, im Repo heißt der Ordner `example-forms` und `CreateDMN` fehlt).
-- [ ] Quick Start mit 5 Schritten an den Anfang des README setzen, Screenshots oder GIF ergänzen.
+- [x] README-Inkonsistenzen beheben (`BeispielForms` → `example-forms`, `CreateDMN` im README als „wird bei der ersten Erstellung angelegt“ gekennzeichnet, nicht vorhandenes `DMN.Erfassung.md` und Verweis auf Agentendokumentation entfernt, Ordnertabelle ergänzt).
+- [x] Quick Start mit 5 Schritten an den Anfang des README setzen.
+- [ ] Screenshots oder GIF im Quick Start ergänzen.
 - [ ] GitHub-Topics setzen (`dvelop`, `bpmn`, `dmn`, `github-copilot`, `process-automation`, `egovernment`), englische Kurzbeschreibung im About-Feld, Social-Preview-Bild.
 - [ ] `CONTRIBUTING.md`, Issue-Templates (inkl. "Kompatibilitätsmeldung" mit Zielversion und Prüfumfang), GitHub Discussions aktivieren.
 - [ ] Release v0.1.0 mit Release Notes und bekannten Grenzen.

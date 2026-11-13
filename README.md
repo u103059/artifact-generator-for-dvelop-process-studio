@@ -1,6 +1,15 @@
 # Artifact Generator for d.velop Process Studio
 
-KI-gestützte Erstellung von Prozessmodellen, Formularen und weiteren Dateien für **d.velop Process Studio** mit GitHub Copilot, spezialisierten Agenten und wiederverwendbaren Vorlagen.
+KI-gestützte Erstellung von Prozessmodellen (BPMN), Formularen (JSON), Entscheidungstabellen (DMN) und Skripten für **d.velop Process Studio** mit GitHub Copilot, spezialisierten Agenten und wiederverwendbaren Vorlagen.
+
+## Quick Start
+1. **Repository klonen** und in Visual Studio Code öffnen (GitHub Copilot muss aktiviert sein).
+2. **Copilot Chat öffnen** und den passenden Agenten aus `.github/agents/` wählen: `BPMN_ProcessStudio`, `Form_ProcessStudio`, `DMN_ProcessStudio` oder `Script_ProcessStudio`.
+3. **Anforderung beschreiben** und den vorgelegten Entwurf bestätigen oder korrigieren (Beispielaufträge siehe unten).
+4. **Ergebnis prüfen:** Die erzeugte Datei liegt in `CreateBPMN/`, `CreateForm/`, `CreateDMN/` bzw. `CreateScript/`.
+5. **Im Zielsystem erproben:** Datei in eine d.velop-Process-Studio-Testumgebung importieren und das Ergebnis testen.
+
+Beispielergebnisse zum Ansehen: [Telearbeit_vereinbaren.bpmn](CreateBPMN/Telearbeit_vereinbaren.bpmn), [Einzelvereinbarung_Telearbeit.json](CreateForm/Einzelvereinbarung_Telearbeit.json) und [Frist_berechnen.json](CreateScript/Frist_berechnen.json).
 
 ## Projektziel
 Dieses Repository unterstützt dabei, fachliche Anforderungen in technische Dateien für d.velop Process Studio zu überführen. Natürlichsprachliche Beschreibungen werden mithilfe generativer KI in strukturierte Prozessmodelle und Formulare übersetzt. Vorlagen, dokumentierte Konventionen und Beispiele bilden die Grundlage für einen nachvollziehbaren und wiederverwendbaren Erstellungsprozess.
@@ -15,8 +24,8 @@ Der Begriff bezeichnet das erzeugte Ergebnis, nicht dessen Freigabestatus. Ein e
 ## Funktionsumfang und Entwicklungsstand
 | Bereich | Inhalt und aktueller Schwerpunkt |
 |---|---|
-| **Prozessmodelle (BPMN)** | Dokumentierter Agentenworkflow zur Erstellung von Prozessbeschreibungen und BPMN-Dateien auf Basis einer Process-Studio-spezifischen XML-Vorlage. |
-| **Formulare (JSON)** | Dokumentierter Agentenworkflow zur Erstellung von Formularen und ihrer Verknüpfung mit BPMN-Benutzeraufgaben. |
+| **Prozessmodelle (BPMN)** | Agentenworkflow zur Erstellung von Prozessbeschreibungen und BPMN-Dateien auf Basis einer Process-Studio-spezifischen XML-Vorlage. |
+| **Formulare (JSON)** | Agentenworkflow zur Erstellung von Formularen und ihrer Verknüpfung mit BPMN-Benutzeraufgaben. |
 | **Entscheidungsregeln (DMN)** | Agentenworkflow zur Erstellung von Entscheidungstabellen auf Basis einer aus einem Modeler-Export abgeleiteten DMN-Vorlage. Ungetestete DMN-Funktionen und die BPMN-Einbindung sind in der Zielumgebung gesondert zu prüfen. |
 | **Skripte (JSON)** | Der Agent erstellt Skripte für d.velop und nutzt dafür eine Vorlage. Die Skripte werden als JSON-Dateien gespeichert. Ob sie sich in der Zielumgebung verwenden lassen, muss dort geprüft werden. |
 
@@ -46,14 +55,14 @@ Der Workflow umfasst die Erstellung einer Formular-ID und deren Eintragung als `
 Beispielauftrag: „Erstelle ein Formular für die Aufgabe ‚Antrag prüfen‘ im vorhandenen BPMN-Modell. Benötigt werden eine schreibgeschützte Antragsnummer, eine verpflichtende Entscheidung und ein Kommentarfeld. Verknüpfe das Formular mit der Benutzeraufgabe.“
 
 ## Entscheidungstabellen erstellen
-Der Agent **DMN_ProcessStudio** erstellt DMN-Entscheidungstabellen auf Grundlage von `DMN.Template.md`. Benötigt werden Tabellenname, Eingabe- und Ausgabevariablen mit Typ (`String`, `Number`, `Boolean`, `Identity`) sowie die Regeln. Der Agent legt zunächst einen Tabellenentwurf zur Bestätigung vor und erzeugt danach die Datei in `CreateDMN/`. Zur Sammlung der Angaben dient das Erfassungstemplate `DMN.Erfassung.md` (eine Eingabe, eine Ausgabe, Hit Policy UNIQUE).
+Der Agent **DMN_ProcessStudio** erstellt DMN-Entscheidungstabellen auf Grundlage von `Templates/DMN.Template.md`. Benötigt werden Tabellenname, Eingabe- und Ausgabevariablen mit Typ (`String`, `Number`, `Boolean`, `Identity`) sowie die Regeln. Der Agent legt zunächst einen Tabellenentwurf zur Bestätigung vor und erzeugt danach die Datei in `CreateDMN/`.
 
-Die Vorlage kennzeichnet verifizierte und ungetestete Inhalte. Die Einbindung in BPMN erfolgt nur, wenn eine exportierte Referenz-BPMN mit Geschäftsregelaktivität in `example-DMN/` vorliegt.
+Die Vorlage kennzeichnet verifizierte und ungetestete Inhalte. Die Einbindung in BPMN erfolgt nur, wenn eine exportierte Referenz-BPMN mit Geschäftsregelaktivität in `examples/example-DMN/` vorliegt.
 
 Beispielauftrag: „Erstelle eine Entscheidungstabelle ‚Standort zu Prüfer‘: Eingabe `Standort_GR` (String), Ausgabe `Pruefer_GR` (Identity). Intern → Benutzer A, extern → Benutzer B, sonst → Gruppe Prüfer.“
 
 ## Skripte erstellen
-Der Agent **Script_ProcessStudio** erstellt Skripte für d.velop scripting (Node.js 22, Cloud) auf Grundlage von `Script.Template.md` und des Export-Beispiels `example-script/SendNotification_draft.json`. Benötigt werden Skriptname, Zweck, Aufrufkontext sowie Ein- und Ausgaben. Der Agent legt zunächst einen Schnittstellenentwurf zur Bestätigung vor und erzeugt danach eine Exportdatei in `CreateScript/`.
+Der Agent **Script_ProcessStudio** erstellt Skripte für d.velop scripting (Node.js 22, Cloud) auf Grundlage von `Templates/Script.Template.md` und des Export-Beispiels `examples/example-script/SendNotification_draft.json`. Benötigt werden Skriptname, Zweck, Aufrufkontext sowie Ein- und Ausgaben. Der Agent legt zunächst einen Schnittstellenentwurf zur Bestätigung vor und erzeugt danach eine Exportdatei in `CreateScript/`.
 
 Die Datei wird über die Importschaltfläche der Skriptverwaltung eingelesen; verschlüsselte Variablen werden danach gepflegt. d.velop-APIs werden standardmäßig mit der Anmeldung des Aufrufers angesprochen, ein API-Key ist die Alternative. Externe Bibliotheken werden nicht in die Exportdatei aufgenommen. Die Einbindung in BPMN wird nur beschrieben. Ungetestete Annahmen, etwa die Übernahme von IDs beim Import und das `output`-Format für Prozesse, sind im Template gekennzeichnet.
 
@@ -61,7 +70,7 @@ Beispielauftrag: „Erstelle ein Skript ‚Benachrichtigung senden‘ für einen
 
 ## Voraussetzungen
 - **Visual Studio Code**, **GitHub Copilot** und die für die Agentennutzung erforderliche Berechtigung.
-- Zugriff auf die zum jeweiligen Workflow gehörenden Agentenkonfigurationen, Vorlagen und Beispiele.
+- Zugriff auf die Agentenkonfigurationen in `.github/agents/` sowie die Vorlagen und Beispiele dieses Repositorys.
 - Geeignete BPMN-, JSON- und gegebenenfalls DMN-Editoren zur Prüfung und Nachbearbeitung.
 - Zugang zu einer geeigneten **d.velop-Process-Studio-Testumgebung**, um Import und Nutzung zu überprüfen.
 
@@ -70,16 +79,19 @@ Die technische Dokumentation beschreibt die bisherige Entwicklungsumgebung und e
 ## Aufbau des Repositorys
 | Ablage | Zweck |
 |---|---|
-| CreateBPMN | Erstellte BPMN-Prozessmodelle. |
-| CreateForm | Erstellte Formulardateien im JSON-Format. |
-| CreateDMN | Erstellte DMN-Entscheidungstabellen. |
-| CreateScript | Erstellte Skripte (JSON-Exportformat) für d.velop scripting. |
-| example-script | Skript-Export aus d.velop Process Studio als technische Referenz. |
-| example-DMN | DMN-Beispiele aus dem d.velop process modeler als technische Referenz. |
-| BeispielForms | Formularbeispiele als technische Referenz. |
-| example-bpmn-processes | BPMN-Beispiele unter anderem für Gateways, Timer, Mehrfachausführungen und Serviceaufrufe. |
+| `.github/agents/` | Agentenanweisungen: `BPMN_ProcessStudio`, `Form_ProcessStudio`, `DMN_ProcessStudio`, `Script_ProcessStudio`. |
+| `Templates/` | Vorlagen und Konventionen, an denen sich die Agenten orientieren: `BPMN_Template.xml`, `Form.Template.md`, `DMN.Template.md`, `Script.Template.md`. |
+| `CreateBPMN` | Erstellte BPMN-Prozessmodelle. |
+| `CreateForm` | Erstellte Formulardateien im JSON-Format. |
+| `CreateDMN` | Erstellte DMN-Entscheidungstabellen (Ordner wird bei der ersten Erstellung durch den Agenten angelegt). |
+| `CreateScript` | Erstellte Skripte (JSON-Exportformat) für d.velop scripting. |
+| `examples/example-script` | Skript-Export aus d.velop Process Studio als technische Referenz. |
+| `examples/example-DMN` | DMN-Beispiele aus dem d.velop process modeler als technische Referenz. |
+| `examples/example-forms` | Formularbeispiele als technische Referenz. |
+| `examples/example-bpmn-processes` | BPMN-Beispiele unter anderem für Gateways, Timer, Mehrfachausführungen und Serviceaufrufe. |
+| `docs` | Projektdokumentation, z. B. die Kommunikationsstrategie. |
 
-Ausführliche Beschreibungen enthalten die Dokumentation des BPMN-Agenten und die Dokumentation des Formularagenten.
+Ausführliche Beschreibungen enthalten die Agentendateien in `.github/agents/` und die jeweiligen Vorlagen.
 
 ## Qualität, Sicherheit und Verantwortung
 Generierte Dateien sind **prüfpflichtige Entwürfe**. Vor der Verwendung sind insbesondere Syntax, fachlicher Ablauf, Rollen, Berechtigungen, Prozessvariablen, Formularreferenzen und externe Dienste zu kontrollieren. Die Kennzeichnung eines BPMN-Modells als ausführbar ersetzt keinen erfolgreichen Import- und Laufzeittest.
