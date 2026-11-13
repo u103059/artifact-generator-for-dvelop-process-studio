@@ -9,8 +9,6 @@ KI-gestützte Erstellung von Prozessmodellen (BPMN), Formularen (JSON), Entschei
 4. **Ergebnis prüfen:** Die erzeugte Datei liegt in `CreateBPMN/`, `CreateForm/`, `CreateDMN/` bzw. `CreateScript/`.
 5. **Im Zielsystem erproben:** Datei in eine d.velop-Process-Studio-Testumgebung importieren und das Ergebnis testen.
 
-Beispielergebnisse zum Ansehen: [Telearbeit_vereinbaren.bpmn](CreateBPMN/Telearbeit_vereinbaren.bpmn), [Einzelvereinbarung_Telearbeit.json](CreateForm/Einzelvereinbarung_Telearbeit.json) und [Frist_berechnen.json](CreateScript/Frist_berechnen.json).
-
 ## Projektziel
 Dieses Repository unterstützt dabei, fachliche Anforderungen in technische Dateien für d.velop Process Studio zu überführen. Natürlichsprachliche Beschreibungen werden mithilfe generativer KI in strukturierte Prozessmodelle und Formulare übersetzt. Vorlagen, dokumentierte Konventionen und Beispiele bilden die Grundlage für einen nachvollziehbaren und wiederverwendbaren Erstellungsprozess.
 
